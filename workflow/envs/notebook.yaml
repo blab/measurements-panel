@@ -1,0 +1,12 @@
+name: notebook
+channels:
+- conda-forge
+- defaults
+dependencies:
+- altair
+- altair_saver
+- nodejs=17
+- notebook
+- numpy
+- pandas
+- python>=3.9

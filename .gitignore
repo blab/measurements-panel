@@ -4,8 +4,12 @@
 tmp/
 
 # Bioinformatics
+.snakemake
 *.fasta
 *.tsv
+benchmarks
+logs
+results
 
 # LaTeX
 *.aux

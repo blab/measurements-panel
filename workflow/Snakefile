@@ -1,0 +1,430 @@
+configfile: "config/config.yaml"
+
+lineage_name_by_abbreviation = {
+    "h3n2": "H3N2",
+    "h1n1pdm": "H1N1pdm",
+    "vic": "Vic",
+    "yam": "Yam",
+}
+
+wildcard_constraints:
+    lineage="(h3n2)"
+
+
+rule all:
+    input:
+        expand("auspice/measurements-panel_flu_seasonal_{lineage}_ha.json", lineage=config["lineages"]),
+        expand("auspice/measurements-panel_flu_seasonal_{lineage}_ha_measurements.json", lineage=config["lineages"]),
+        expand("results/{lineage}/antigenic_distances_between_clades.pdf", lineage=config["lineages"]),
+
+
+rule prepare_titers:
+    input:
+        titers=lambda wildcards: f"data/{wildcards.lineage.upper()}_HI_data.tsv",
+    output:
+        titers="results/{lineage}/titers.tsv",
+    benchmark:
+        "benchmarks/{lineage}/prepare_titers.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    params:
+        columns_to_keep="virusStrain,serumStrain,serumIsolate,source,titer",
+        original_columns="virusStrain,serumStrain,serumIsolate",
+        new_columns="virus_strain,serum_strain,serum_id",
+    shell:
+        """
+        csvtk -t cut -f {params.columns_to_keep} {input.titers} \
+            | csvtk -t rename -f {params.original_columns} -n {params.new_columns} > {output.titers}
+        """
+
+rule align:
+    input:
+        sequences="data/{lineage}_ha_sequences.fasta",
+        reference="config/reference_{lineage}_ha.gb",
+    output:
+        alignment="results/{lineage}/aligned.fasta"
+    benchmark:
+        "benchmarks/{lineage}/align.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/align.txt"
+    threads: 4
+    shell:
+        """
+        augur align \
+            --sequences {input.sequences} \
+            --reference-sequence {input.reference} \
+            --output {output.alignment} \
+            --fill-gaps \
+            --remove-reference \
+            --nthreads {threads} &> {log}
+        """
+
+
+rule tree:
+    input:
+        alignment="results/{lineage}/aligned.fasta",
+    output:
+        tree="results/{lineage}/tree_raw.nwk"
+    benchmark:
+        "benchmarks/{lineage}/tree.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/tree.txt"
+    threads: 4
+    shell:
+        """
+        augur tree \
+            --method iqtree \
+            --alignment {input.alignment} \
+            --tree-builder-args="--polytomy -nt AUTO" \
+            --override-default-args \
+            --output {output.tree} \
+            --nthreads {threads} &> {log}
+        """
+
+
+rule refine:
+    input:
+        metadata="data/{lineage}_ha_metadata.tsv",
+        alignment="results/{lineage}/aligned.fasta",
+        tree="results/{lineage}/tree_raw.nwk",
+    output:
+        tree="results/{lineage}/tree.nwk",
+        branch_lengths="results/{lineage}/branch_lengths.json"
+    benchmark:
+        "benchmarks/{lineage}/refine.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/refine.txt"
+    params:
+        **config["refine"]
+    shell:
+        """
+        augur refine \
+            --metadata {input.metadata} \
+            --alignment {input.alignment} \
+            --tree {input.tree} \
+            --root "A/HongKong/1/1968" \
+            --use-fft \
+            --timetree \
+            --no-covariance \
+            --date-confidence \
+            --date-inference {params.date_inference} \
+            --clock-rate {params.clock_rate} \
+            --clock-std-dev {params.clock_std_dev} \
+            --coalescent {params.coalescent} \
+            --output-tree {output.tree} \
+            --output-node-data {output.branch_lengths} &> {log}
+        """
+
+
+rule ancestral:
+    input:
+        alignment="results/{lineage}/aligned.fasta",
+        tree="results/{lineage}/tree.nwk",
+    output:
+        nt_muts="results/{lineage}/nt_muts.json"
+    benchmark:
+        "benchmarks/{lineage}/ancestral.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/ancestral.txt"
+    params:
+        **config["ancestral"]
+    shell:
+        """
+        augur ancestral \
+            --alignment {input.alignment} \
+            --tree {input.tree} \
+            --output-node-data {output.nt_muts} \
+            --inference {params.inference} &> {log}
+        """
+
+
+rule translate:
+    input:
+        tree="results/{lineage}/tree.nwk",
+        nt_muts="results/{lineage}/nt_muts.json",
+        reference="config/reference_{lineage}_ha.gb",
+    output:
+        aa_muts="results/{lineage}/aa_muts.json",
+    benchmark:
+        "benchmarks/{lineage}/translate.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/translate.txt"
+    shell:
+        """
+        augur translate \
+            --tree {input.tree} \
+            --ancestral-sequences {input.nt_muts} \
+            --reference-sequence {input.reference} \
+            --output-node-data {output.aa_muts} &> {log}
+        """
+
+
+rule clades:
+    input:
+        tree="results/{lineage}/tree.nwk",
+        nt_muts="results/{lineage}/nt_muts.json",
+        aa_muts="results/{lineage}/aa_muts.json",
+        clades="config/clades_{lineage}_ha.tsv",
+    output:
+        clades="results/{lineage}/clades.json"
+    benchmark:
+        "benchmarks/{lineage}/clades.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/clades.txt"
+    shell:
+        """
+        augur clades \
+            --tree {input.tree} \
+            --mutations {input.nt_muts} {input.aa_muts} \
+            --clades {input.clades} \
+            --output {output.clades} &> {log}
+        """
+
+
+rule reconstruct_translations:
+    input:
+        tree="results/{lineage}/tree.nwk",
+        aa_muts="results/{lineage}/aa_muts.json",
+    output:
+        aa_alignment="results/{lineage}/aa_seq_{gene}.fasta"
+    benchmark:
+        "benchmarks/{lineage}/reconstruct_translations_{gene}.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/reconstruct_translations_{gene}.txt"
+    shell:
+        """
+        augur reconstruct-sequences \
+            --tree {input.tree} \
+            --mutations {input.aa_muts} \
+            --gene {wildcards.gene} \
+            --output {output.aa_alignment} \
+            --internal-nodes &> {log}
+        """
+
+
+rule titer_tree_model:
+    input:
+        titers="results/{lineage}/titers.tsv",
+        tree="results/{lineage}/tree.nwk",
+    output:
+        titer_model="results/{lineage}/titer-tree-model.json",
+    benchmark:
+        "benchmarks/{lineage}/titer_tree_model.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/titer_tree_model.txt"
+    shell:
+        """
+        augur titers tree \
+            --titers {input.titers} \
+            --tree {input.tree} \
+            --output {output.titer_model} &> {log}
+        """
+
+
+rule titer_substitution_model:
+    input:
+        titers="results/{lineage}/titers.tsv",
+        tree="results/{lineage}/tree.nwk",
+        aa_muts="results/{lineage}/aa_muts.json",
+        alignments=expand("results/{{lineage}}/aa_seq_{gene}.fasta", gene=config["genes"]),
+    output:
+        titer_model="results/{lineage}/titer-sub-model.json",
+    benchmark:
+        "benchmarks/{lineage}/titer_substitution_model.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/titer_substitution_model.txt"
+    params:
+        genes=config["genes"]
+    shell:
+        """
+        augur titers sub \
+            --titers {input.titers} \
+            --alignment {input.alignments} \
+            --gene-names {params.genes} \
+            --tree {input.tree} \
+            --output {output.titer_model} &> {log}
+        """
+
+
+rule export:
+    input:
+        metadata="data/{lineage}_ha_metadata.tsv",
+        tree="results/{lineage}/tree.nwk",
+        node_data=[
+            "results/{lineage}/branch_lengths.json",
+            "results/{lineage}/nt_muts.json",
+            "results/{lineage}/aa_muts.json",
+            "results/{lineage}/clades.json",
+            "results/{lineage}/titer-tree-model.json",
+            "results/{lineage}/titer-sub-model.json"
+        ],
+        auspice_config="config/auspice_config_{lineage}.json",
+        vaccines="config/vaccines_{lineage}.json",
+    output:
+        auspice_main="auspice/measurements-panel_flu_seasonal_{lineage}_ha.json"
+    benchmark:
+        "benchmarks/{lineage}/export.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/export.txt"
+    shell:
+        """
+        export AUGUR_RECURSION_LIMIT=5000 && augur export v2 \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --node-data {input.vaccines} {input.node_data} \
+            --auspice-config {input.auspice_config} \
+            --output {output.auspice_main} \
+            --minify-json \
+            --include-root-sequence &> {log}
+        """
+
+
+rule tip_frequencies:
+    input:
+        tree="results/{lineage}/tree.nwk",
+        metadata="data/{lineage}_ha_metadata.tsv",
+    output:
+        frequencies="auspice/measurements-panel_flu_seasonal_{lineage}_ha_tip-frequencies.json",
+    benchmark:
+        "benchmarks/{lineage}/tip_frequencies.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/tip_frequencies.txt"
+    params:
+        **config["frequencies"]
+    shell:
+        """
+        augur frequencies \
+            --method kde \
+            --tree {input.tree} \
+            --metadata {input.metadata} \
+            --narrow-bandwidth {params.narrow_bandwidth} \
+            --proportion-wide {params.proportion_wide} \
+            --pivot-interval {params.pivot_interval} \
+            --min-date {params.min_date} \
+            --max-date {params.max_date} \
+            --output {output}
+        """
+
+
+rule antigenic_distances_between_strains:
+    input:
+        tree="results/{lineage}/tree.nwk",
+        clades="results/{lineage}/clades.json",
+        titer_model="results/{lineage}/titer-sub-model.json",
+        titers="results/{lineage}/titers.tsv",
+        branch_lengths="results/{lineage}/branch_lengths.json",
+        frequencies="auspice/measurements-panel_flu_seasonal_{lineage}_ha_tip-frequencies.json",
+    output:
+        distances="results/{lineage}/antigenic_distances_between_strains.tsv",
+    benchmark:
+        "benchmarks/{lineage}/antigenic_distances_between_strains.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/antigenic_distances_between_strains.txt"
+    params:
+        passage="cell",
+        assay="hi",
+    shell:
+        """
+        python3 scripts/get_antigenic_distances_between_strains.py \
+            --tree {input.tree} \
+            --clades {input.clades} \
+            --titer-model {input.titer_model} \
+            --titers {input.titers} \
+            --branch-lengths {input.branch_lengths} \
+            --frequencies {input.frequencies} \
+            --annotations lineage={wildcards.lineage} passage={params.passage} assay={params.assay} \
+            --output {output.distances} &> {log}
+        """
+
+
+rule antigenic_distances_between_clades:
+    input:
+        distances="results/{lineage}/antigenic_distances_between_strains.tsv",
+    output:
+        distances="results/{lineage}/antigenic_distances_between_clades.tsv",
+    benchmark:
+        "benchmarks/{lineage}/antigenic_distances_between_clades.txt"
+    conda:
+        "envs/nextstrain.yaml"
+    log:
+        "logs/{lineage}/antigenic_distances_between_clades.txt"
+    shell:
+        """
+        python3 scripts/get_antigenic_distances_between_clades.py \
+            --lineage {wildcards.lineage} \
+            --distances {input.distances} \
+            --output {output.distances} &> {log}
+        """
+
+
+rule plot_antigenic_distances:
+    input:
+        distances="results/{lineage}/antigenic_distances_between_clades.tsv",
+    output:
+        plot="results/{lineage}/antigenic_distances_between_clades.pdf",
+    benchmark:
+        "benchmarks/{lineage}/plot_antigenic_distances.txt"
+    conda:
+        "envs/notebook.yaml"
+    log:
+        "logs/{lineage}/notebooks/plot_antigenic_distances.py.ipynb"
+    notebook:
+        "notebooks/plot-antigenic-distances.py.ipynb"
+
+
+rule export_measurements:
+    input:
+        distances="results/{lineage}/antigenic_distances_between_strains.tsv",
+    output:
+        measurements="auspice/measurements-panel_flu_seasonal_{lineage}_ha_measurements.json",
+    conda: "envs/nextstrain.yaml"
+    params:
+        strain_column="test_strain",
+        value_column="log2_titer",
+        grouping_column=["reference_strain", "clade_reference", "source", "serum"],
+        key=lambda wildcards: f"{wildcards.lineage}_ha_cell_hi",
+        title=lambda wildcards: f"{lineage_name_by_abbreviation[wildcards.lineage]} cell-passaged HI measurements",
+        x_axis_label="normalized log2 titer",
+        threshold=2.0,
+        filters=["reference_strain", "clade_reference", "source", "serum"],
+    shell:
+        """
+        augur measurements export \
+            --collection {input.distances} \
+            --strain-column {params.strain_column} \
+            --value-column {params.value_column} \
+            --grouping-column {params.grouping_column} \
+            --key {params.key} \
+            --title {params.title:q} \
+            --x-axis-label {params.x_axis_label:q} \
+            --threshold {params.threshold} \
+            --filters {params.filters} \
+            --show-threshold \
+            --hide-overall-mean \
+            --minify-json \
+            --output-json {output.measurements}
+        """

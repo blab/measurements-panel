@@ -1,0 +1,33 @@
+# Define lineages for the analysis.
+lineages:
+  - h3n2
+
+# Define genes to translate from nucleotide to amino acid sequences. These names
+# must match coding regions defined in the reference.
+genes:
+  - SigPep
+  - HA1
+  - HA2
+
+# Define parameters for specific steps of the workflow by name.
+filter:
+  # Allow earlier strains that were included as references in the initial
+  # subsampling.
+  min_date: 2005-01-01
+  max_date: 2010-01-01
+
+refine:
+  coalescent: const
+  date_inference: marginal
+  clock_rate: 0.00382
+  clock_std_dev: 0.000764
+
+ancestral:
+  inference: joint
+
+frequencies:
+  narrow_bandwidth: 0.1667
+  proportion_wide: 0.0
+  min_date: 2005-01-01
+  max_date: 2012-01-01
+  pivot_interval: 1
