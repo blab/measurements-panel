@@ -78,9 +78,11 @@ augur parse \
 Augur cannot properly parse all of the dates, so we need to transform the unparsed dates to "XXXX-XX-XX" strings.
 
 ``` bash
-../scripts/tsv-to-ndjson < parsed_h3n2_ha_metadata.tsv \
-  | ../scripts/transform-date-fields --expected-date-formats "%Y-%m-%d" "%Y-XX-XX" --date-fields date \
-  | ../scripts/ndjson-to-tsv --metadata parsed_h3n2_ha_metadata_with_corrected_dates.tsv --metadata-columns strain accession date
+csvtk -t replace \
+  -f date \
+  -p "(NON--|^$)" \
+  -r "XXXX-XX-XX" \
+  parsed_h3n2_ha_metadata.tsv > parsed_h3n2_ha_metadata_with_corrected_dates.tsv
 ```
 
 Sequence names from Bedford et al. 2014 do not always match names from these databases, so we need to rename the sequences to match the Bedford et al. names.
@@ -116,3 +118,4 @@ seqkit replace \
 ```
 
 The resulting files `h3n2_ha_sequences.fasta` and `h3n2_ha_metadata.tsv` are the starting points for the analyses in this paper.
+Each file should contain 401 records.
