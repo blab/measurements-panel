@@ -67,9 +67,84 @@ We show how the combined interactive visualizations may be used by decision-make
 
 \section{Introduction}
 
+A primary component of seasonal influenza A/H3N2 evolution is the ability of viruses to acquire mutations that allow them to escape antibodies from previous infections.
+This process, known as antigenic drift, changes the appearance of viral surface proteins hemagglutinin (HA) and neuraminidase (NA).
+Viruses balance escape from antibodies with the maintenance of their protein functions.
+The HA surface protein allows viruses to bind to the surface of new host cells and initiate infection.
+When antibodies bind to HA, they can prevent viruses from binding and infecting cells.
+Viruses that acquire mutations to HA that prevent antibodies from binding but do not disrupt the ability of HA to bind to host cells should be able to infect hosts.
+
+Experimental measurements of antigenic drift allow researchers to quantify how well viruses with different HA mutations can escape detection by antibodies.
+Until recently, the most reliable of these experimental measurements were hemagglutination inhibition (HI) assays \citep{hirst1943studies}.
+In these assays, researchers place red blood cells into a multi-well plate and add one test virus per well.
+When a well contains only blood cells and virus, the virus binds to the blood cells causing them to agglutinate into a wide, red dot that fills the well.
+Next, researchers add two-fold dilutions of antisera from naive ferrets that were infected by a single reference virus.
+When the antisera contains enough antibodies to effectively bind the virus, the blood cells do not agglutinate and instead sink to the bottom of the well in a small red dot.
+The highest dilution of antisera required to inhibit agglutination provides the ``titer'' measurement between the reference and test viruses.
+When the test virus is the same as the reference virus, the assay provides an autologous titer measurement.
+When the test and reference viruses differ, the assay provides a heterologous titer measurement.
+
+Researchers report titer measurements as both raw and normalized values.
+Raw titer measurements represent the denominator associated with the minimum dilution required to inhibit agglutination.
+These two-fold dilution series have raw measurements like 80, 160, 320, etc. such that lower numbers represent the presence of more antisera in the dilution.
+These raw measurements can also be represented more conveniently on a $\log_{2}$ scale \citep{Smith:2004jc,Bedford:2014bf}.
+Antisera vary in their potency such that some sera always require higher or lower dilutions to inhibit agglutination regardless of the test virus.
+For example, a low potency antiserum requires a lower dilution to inhibit agglutination by the same reference virus resulting in a low autologous titer.
+To account for this variable potency, we normalize titer measurements by subtracting the $\log_{2}$ titer between a test and reference virus (the heterologous titer) from the $\log_{2}$ titer between the reference virus and its own antisera (the autologous titer).
+The resulting normalized titers enable comparisons of antigenic distances across reference viruses.
+Importantly, viruses with a $\log_{2}$ distance greater than 2 are considered antigenically distinct for the purposes of deciding updates to vaccine composition \citep{Katz2011}.
+
+To understand broad patterns of antigenic drift beyond simple pairwise relationships, antigenic distance must be summarized by statistical or visual representations.
+For example, the method of antigenic cartography maps multidimensional antigenic distances to a two-dimensional space using dimensionality reduction methods \citep{Smith:2004jc,Bedford:2014bf}.
+These map-like visualizations reveal long-term patterns and trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
+However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
+
+Alternate visualizations created in the nextflu \citep{NeherBedford2018} and Nextstrain \citep{Hadfield2018} frameworks address the needs of influenza researchers who make decisions about vaccine composition.
+Within nextflu, all available pairwise antigenic distances between a selected reference virus's antisera and test viruses are represented by colored tips on a phylogenetic tree constructed from HA sequences (Figure~\ref{fig:1}A).
+This interactive visualization allows users to select a specific reference virus by clicking a ``gear'' icon drawn on the phylogeny where the reference virus occurs.
+All tips in the tree that have titer measurements to the selected reference appear as circles colored by the quantitative value of their antigenic distance (e.g., smaller distances are blue, larger distances are red).
+This representation of the pairwise data allows users to identify phylogenetic clades that are antigenically distance from a given antiserum or that are missing measurements from that antiserum.
+Influenza virologists use this information to select potential vaccine candidates that ``cover'' the most extant clades and prioritize which HI assays to perform next.
+The benefits of visualizing the phylogenetic context of antigenic distances for a single antiserum are balanced by visual design costs of not showing antigenic distances for all antisera in a single view.
+
+Another recent representation of pairwise antigenic distances attempts to address the limitations of the phylogenetic visualization.
+This representation summarizes the mean antigenic distances between a subset of relevant reference viruses (i.e., likely vaccine candidates) and all tests viruses within each extant clade.
+The resulting heatmaps use the x-axis to encode phylogenetic clades, the y-axis to encode reference viruses, and color to encode the mean $\log_{2}$ distance between a given reference virus and corresponding test viruses (Figure~\ref{fig:1}B).
+These static heatmaps express more data than the phylogenetic representation, allowing decision-makers to identify qualitative trends across antisera and clades in biannual reports to the World Health Organization \citep{BedfordWHO2018,BedfordWHO2019}.
+As with all heatmaps, these titer matrices suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a spatial scale.
+
 \section{Methods}
 
+Given the benefits and costs of existing visualizations of antigenic distances, we applied user-driven design and standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
+To this end, we established the goals of users who would interact with our visualizations, identified the most effective encodings for the data users needed to explore, and composed an interactive visualization from these encodings to address the desired goals.
+
+Based on informal user interviews with collaborators at the Influenza Division of the Centers for Disease Control and Prevention, we identified a list of primary goals for the phylogenetic and heatmap visualizations.
+Users wanted to know which currently circulating clades of influenza have measurements against a given serum, to prioritize which clades to select test viruses from in future HI experiments.
+Additionally, users wanted to know which available antiserum has the lowest antigenic distance across all circulating clades, to identify potential vaccine candidates.
+Finally, users wanted to compare the antigenic diversity of extant clades.
+From these user goals, we decided that an optimal visualization would summarize the distribution of antigenic distances by antiserum and clade.
+
+We observed that the existing titer matrix heatmaps addressed most of the user goals except for communicating which extant clades were missing measurements.
+Both the phylogenetic and heatmap views use color to encode the most relevant quantitative data of antigenic distance.
+Previous visualization design research has shown that quantitative data are more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
+In the phylogenetic view, the two available positional axes are used to represent time and the unitless phylogenetic position of nodes.
+Neither of these data are relevant to the user goals described above.
+In the titer matrix heatmaps, the two positional axes are used to encode two nominal data types (reference virus name and clade name).
+
+We reasoned that we could make a more effective visualization that addressed most user goals by changing the encoding of data in the titer matrix heatmaps.
+Specifically, we chose to temporally omit clade names from the visualization and encode the antigenic distances on the positional x-axis.
+By encoding antigenic distance on a positional axis, we could annotate relevant thresholds for antigenic distances, show all available measurements for each reference virus at once, and display a summary statistic (mean antigenic distance) for each reference virus.
+We chose to maintain the encoding of nominal reference virus names on the y-axis, since most user goals require interrogation of specific antisera.
+With color available as an additional channel, we decided to encode the antigenic class of each antigenic distance with color.
+We implemented this design as a new interactive panel in Nextstrain's visualization tool, Auspice (Figure?).
+
 \section{Results}
+
+\subsection{Interactive visualization of titer measurements}
+
+\subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
+
+\subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
 
 \section{Discussion}
 
@@ -113,10 +188,22 @@ The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF RE
 %%%  NB logo1.eps is required in the path in order to correctly compile front page header %%%
 
 \begin{figure}[h!]
-\begin{center}
-\includegraphics[width=10cm]{logo1}% This is a *.eps file
-\end{center}
-\caption{ Enter the caption for your figure here.  Repeat as  necessary for each of your figures}\label{fig:1}
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/figure-1-mockup-static-visualizations-of-serological-data-for-decision-makers}
+  \end{center}
+  \caption{
+    Previous approaches to static visualization of serological data for seasonal influenza vaccine composition reports.
+A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select a single vaccine candidate (e.g., A/Texas/50/2012) and see how well that strain might protect against other circulating strains in their genetic context based on the serological distance encoded by color (orange and red color indicate greater distance and less protection by the selected strain).
+To compare multiple vaccine candidates, users have to select different strains manually and toggle between them.
+B) Heatmap visualization of mean serological distances between multiple vaccine candidates (reference strains on the y-axis) and strains in currently circulating phylogenetic clades.
+Heatmaps encode distance by color and display the distance as text, allowing the user to compare how well multiple vaccine candidates might protect against circulating strains.
+C) Interval plot of mean +/- 89\% confidence interval values of serological distances between vaccine candidates (y-axis) and strains in currently circulating clades.
+Unlike the heatmap visualization, the interval plot encodes serological distance with a spatial scale (the x-axis) instead of color and encodes clade membership with color instead of the spatial scale.
+The vertical gray lines represent the threshold above which strains are considered antigenically distinct (x=2, solid line) and where strains are antigenically identical (x=0, dashed line).
+This view allows users to compare multiple vaccine candidates, identify the candidate that protects specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying serological measurements.
+D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test strains in each clade.
+This view allows users to perform the same tasks as the interval plot, but it also allows users to identify how many measurements support the summary statistics for a given vaccine candidate and identify multiple modes in the raw data distribution that could indicate within-clade antigenic variation.
+}\label{fig:1}
 \end{figure}
 
 %%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.
