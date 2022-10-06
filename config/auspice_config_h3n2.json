@@ -38,9 +38,11 @@
   ],
   "display_defaults": {
     "map_triplicate": true,
-    "color_by": "cTiterSub"
+    "color_by": "clade_membership"
   },
   "maintainers": [
+    {"name": "Jover Lee", "url": "https://bedford.io/team/jover-lee/"},
+    {"name": "James Hadfield", "url": "https://bedford.io/team/james-hadfield/"},
     {"name": "John Huddleston", "url": "https://bedford.io/team/john-huddleston/"}
   ],
   "filters": [
