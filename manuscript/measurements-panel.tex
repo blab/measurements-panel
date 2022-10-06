@@ -144,7 +144,11 @@ We implemented this design as a new interactive panel in Nextstrain's visualizat
 
 \subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
 
+Before and after vaccine strain selection (Figure~\ref{fig:2}).
+
 \subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
+
+Visualization of raw data instead of summary statistics reveals different distributions that correspond to genotype-specific titer measurements (Figure~\ref{fig:3}).
 
 \section{Discussion}
 
@@ -204,6 +208,44 @@ This view allows users to compare multiple vaccine candidates, identify the cand
 D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test strains in each clade.
 This view allows users to perform the same tasks as the interval plot, but it also allows users to identify how many measurements support the summary statistics for a given vaccine candidate and identify multiple modes in the raw data distribution that could indicate within-clade antigenic variation.
 }\label{fig:1}
+\end{figure}
+
+\setcounter{figure}{2}
+\setcounter{subfigure}{0}
+\begin{subfigure}
+\setcounter{figure}{2}
+\setcounter{subfigure}{0}
+    \centering
+    \begin{minipage}[b]{0.75\textwidth}
+        \includegraphics[width=\linewidth]{figures/figure-2a-mockup}
+        \caption{Before vaccine selection.}
+        \label{fig:2A}
+    \end{minipage}
+
+\setcounter{figure}{2}
+\setcounter{subfigure}{1}
+    \begin{minipage}[b]{0.75\textwidth}
+        \includegraphics[width=\linewidth]{figures/figure-2b-mockup}
+        \caption{After vaccine selection.}
+        \label{fig:2B}
+    \end{minipage}
+
+\setcounter{figure}{2}
+\setcounter{subfigure}{-1}
+    \caption{Enter the caption for your subfigure here. \textbf{(A)} This is the caption for Subfigure 1. \textbf{(B)} This is the caption for Subfigure 2.}
+    \label{fig:2}
+\end{subfigure}
+
+\begin{figure}[h!]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/figure-3-mockup-for-case-study-2}
+  \end{center}
+  \caption{
+    Visualization of raw data and summary statistics.
+A) Phylogenetic tree.
+B) Titer measurements summarized by reference strain and test strain clade with mean and standard deviation.
+C) Individual (raw) titer measurements showing pairwise values between test strains (colored by clade) and the reference strains showing a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference strain compared to a unimodal distribution for the A/Beijing/353/1989 reference strain.
+D) Individual titer measurements colored by genotype at site HA1:135, revealing a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring raw measurements by clade alone.}\label{fig:3}
 \end{figure}
 
 %%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.
