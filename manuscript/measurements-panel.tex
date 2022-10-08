@@ -136,7 +136,11 @@ Specifically, we chose to temporally omit clade names from the visualization and
 By encoding antigenic distance on a positional axis, we could annotate relevant thresholds for antigenic distances, show all available measurements for each reference virus at once, and display a summary statistic (mean antigenic distance) for each reference virus.
 We chose to maintain the encoding of nominal reference virus names on the y-axis, since most user goals require interrogation of specific antisera.
 With color available as an additional channel, we decided to encode the antigenic class of each antigenic distance with color.
-We implemented this design as a new interactive panel in Nextstrain's visualization tool, Auspice (Figure?).
+
+We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on Github (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
+In Auspice, the test viruses of the titer measurements are linked to the viruses in the phylogeny tree via the viruses' names so users can explore relationships between the genetic and serology data in one application.
+The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
+The phylogeny tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 
 \section{Results}
 
