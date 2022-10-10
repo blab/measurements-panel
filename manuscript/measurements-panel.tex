@@ -111,6 +111,8 @@ As with all heatmaps, these titer matrices suffer reduced expressiveness by enco
 
 \section{Methods}
 
+\subsection{Visual design}
+
 Given the benefits and costs of existing visualizations of antigenic distances, we applied user-driven design and standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
 To this end, we established the goals of users who would interact with our visualizations, identified the most effective encodings for the data users needed to explore, and composed an interactive visualization from these encodings to address the desired goals.
 
@@ -132,6 +134,10 @@ Specifically, we chose to temporally omit clade names from the visualization and
 By encoding antigenic distance on a positional axis, we could annotate relevant thresholds for antigenic distances, show all available measurements for each reference virus at once, and display a summary statistic (mean antigenic distance) for each reference virus.
 We chose to maintain the encoding of nominal reference virus names on the y-axis, since most user goals require interrogation of specific antisera.
 With color available as an additional channel, we decided to encode the antigenic class of each antigenic distance with color.
+
+\subsection{Data curation}
+
+\subsection{Implementation}
 
 We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on Github (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
 In Auspice, the test viruses of the titer measurements are linked to the viruses in the phylogeny tree via the viruses' names so users can explore relationships between the genetic and serology data in one application.
