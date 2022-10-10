@@ -142,6 +142,11 @@ We implemented this design as a new interactive measurements panel within Nextst
 In Auspice, the test viruses of the titer measurements are linked to the viruses in the phylogeny tree via the viruses' names so users can explore relationships between the genetic and serology data in one application.
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogeny tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
+The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
+The application can be cloned and run locally or users can use Auspice through two public websites.
+Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data in their own browser.
+If users want to share their visualizations publicly, they can make their files available through a public GitHub repository and view the visualizations through \url{https://nextstrain.org/community/}.
+The visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
 
