@@ -148,11 +148,33 @@ The phylogeny tree is provided via a dataset JSON file produced by \texttt{augur
 
 \subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
 
-Before and after vaccine strain selection (Figure~\ref{fig:2}).
+The vaccine selection decisions for the 2010-11 northern hemisphere influenza season ocurred in the fall of 2009.
+A phylogenetic tree using publicly available data from \citep{Bedford:2014bf} (Figure~\ref{fig:3}A) identifies three potentially co-circulating clades 173Q, 144K and 158N/189K, with 173Q dominant in the previous season and 144k dominant in the 2009 southern hemisphere season.
+The H3N2 vaccine used a A/Brisbane/10/2007-like virus for each of those two seasons, part of the earlier 140I clade which not seen in large numbers since the 2007/8 season.
+Comparing the current vaccine choice to a both an older reference sera (A/Wisconsin/67/2005) and a newer sera (A/Perth/16/2009) indicates a large variability in the normalized HI scores against test viruses from different clades available by the selection deadline (Figure~\ref{fig:3}B) (Todo explain the choice of these reference sera).
+These data indicate that both A/Wisconsin/67/2005 and A/Brisbane/10/2007 sera have poor responses (higher normalized log2 titer values) to clades 144K and 158N/189K, whereas A/Perth/16/2009 showed more potent neutralizing ability.
+Given the dominance of clade 144K in the 2009 southern hemisphere season the choice was made to recommend switching to a A/Perth/16/2009-like virus for the (H3N2) vaccine (TODO - check wording here).
+
+
+Adding in data from after the vaccine selection deadline (Figure~\ref{fig:3}A,C) indicates that clade 158/189 predominated for the following H3N2 seasons in both hemispheres, and that A/Perth/16/2009 continued to provide consistently better coverage (todo: better wording?) against these strains compared with the previous vaccine choice. 
+
+
+A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine strain for the 2010-12 southern hemisphere seasons and the 2010-11 and 2011-12 northern hemisphere seasons. Note that the actual selection process used a richer dataset which is not publicly available to include here, and as such these data should be seen as representative of the process only.
+
 
 \subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
 
-Visualization of raw data instead of summary statistics reveals different distributions that correspond to genotype-specific titer measurements (Figure~\ref{fig:3}).
+All else being equal, genetically similar strains will have low (better) HI titer measurements than antigenically diverged strains.
+While clade definitions attempt to capture antigenic similarity, mutations may still be present within a clade which result in differing responses of reference sera to the test strains in the clade.
+
+
+Clade 144V circulated between 1984 and 1992 (Figure~\ref{fig:4}A) and multiple reference sera from this clade have been used in HI assays.
+Looking at two such reference sera, there is a wide distribution of titer measurements when tested against viruses from the same clade; the two sera shown in Figure~\ref{fig:4}B have titer values which range from antigenically similar to distinct.
+Looking at the raw measurements themselves Figure~\ref{fig:4}C indicates a potentially bimodal distribution for the A/Shanghai/11/1987 sera, which is hidden by looking at the distribution summaries themselves.
+Nextstrain allows us to interrogate the mutations observed within a clade such as 144V via a number of approaches, and the entropy panel indicates that codon HA1:135 has the highest entropy among 144V genomes, indicating that multiple amino acids are present in a large fraction of viruses here. 
+Coloring the data by genotype HA1:135 (Figure~\ref{fig:4}D) not only indicates that these residue changes may explain the bimodal distribution though to exist in A/Shanghai/11/1987 responses, but also indicates that this bimodality may also be present in A/Beijing/252/1989 results; these sera contain HA1:135G and HA1:135E, respectively, which is a plausible explanation for why the former has lower titer scores against HA1:135G test viruses and the later has lower titer scores against HA1:135E.
+HA:135 is located in the receptor binding domain (citation needed) and is thus a very plausible driver of such distinct inhibition responses.
+
 
 \section{Discussion}
 
@@ -238,42 +260,39 @@ m) The x-axis of the measurements plot shows the range of measurements values in
   }\label{fig:2}
 \end{figure}
 
-\setcounter{figure}{3}
-\setcounter{subfigure}{0}
-\begin{subfigure}
-\setcounter{figure}{3}
-\setcounter{subfigure}{0}
-    \centering
-    \begin{minipage}[b]{0.75\textwidth}
-        \includegraphics[width=\linewidth]{figures/figure-2a-mockup}
-        \caption{Before vaccine selection.}
-        \label{fig:3A}
-    \end{minipage}
 
-\setcounter{figure}{3}
-\setcounter{subfigure}{1}
-    \begin{minipage}[b]{0.75\textwidth}
-        \includegraphics[width=\linewidth]{figures/figure-2b-mockup}
-        \caption{After vaccine selection.}
-        \label{fig:3B}
-    \end{minipage}
 
-\setcounter{figure}{3}
-\setcounter{subfigure}{-1}
-    \caption{Enter the caption for your subfigure here. \textbf{(A)} This is the caption for Subfigure 1. \textbf{(B)} This is the caption for Subfigure 2.}
-    \label{fig:3}
-\end{subfigure}
 
 \begin{figure}[h!]
   \begin{center}
-    \includegraphics[width=\textwidth]{figures/figure-3-mockup-for-case-study-2}
+    \includegraphics[width=\textwidth]{figures/figure-3.jpg}
   \end{center}
   \caption{
-    Visualization of raw data and summary statistics.
-A) Phylogenetic tree.
-B) Titer measurements summarized by reference strain and test strain clade with mean and standard deviation.
-C) Individual (raw) titer measurements showing pairwise values between test strains (colored by clade) and the reference strains showing a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference strain compared to a unimodal distribution for the A/Beijing/353/1989 reference strain.
-D) Individual titer measurements colored by genotype at site HA1:135, revealing a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring raw measurements by clade alone.}\label{fig:3}
+    Fall 2009 vaccine selection candidates.
+    A) Phylogenetic tree summarizing the clade turnover. At the selection deadline clade 144K (light blue) was dominant, with A/Perth/16/2009 the candidate reference sera from this clade.
+    B) Neutralization titers against three candidate vaccine strains (reference sera) using data available prior to the selection deadline.
+    C) Same as (B) but including test viruses collected after the selection deadline.
+    \break
+    TODO change fonts, reorder reference sera etc. This can be done after the text is finalised.
+    \break
+    Potential todo: identify the northen hemisphere influenza seasons? Perhaps by replacing Auspice's date lines with shaded regions.
+  }
+  \label{fig:3}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+  \begin{center}
+    \includegraphics[width=\textwidth]{figures/figure-4.jpg}
+  \end{center}
+  \caption{
+    Neutralization of clade 144V sera is bimodal when conditioning on RBD site 135.
+    A) Summary phylogenetic tree with clade 144V highlighted.
+    B) Mean titer measurements of 2 144V reference sera against 144V test viruses appear similar.
+    C) Individual (raw) measurements suggest a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference strain compared to a unimodal distribution for the A/Beijing/353/1989 reference strain.
+    D) When coloring by RBD site HA1:135 reveals a  potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring raw measurements by clade alone.}
+  \label{fig:4}
 \end{figure}
 
 %%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.
