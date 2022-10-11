@@ -131,14 +131,15 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 
 \subsection{Implementation}
 
-We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on Github (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
+We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
 This implementation maintains the phylogenetic context and interactive data exploration provided by the \emph{nextflu} implementation.
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogeny tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
-Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data in their own browser.
-If users want to share their visualizations publicly, they can make their files available through a public GitHub repository and view the visualizations through \url{https://nextstrain.org/community/}.
+Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data locally in their own browser.
+Visualizations can be also shared with others through \url{https://nextstrain.org/}.
+Full documentation for sharing analyses through Nextstrain can be found at \url{https://docs.nextstrain.org/en/latest/guides/share/index.html}.
 The visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \subsection{Data curation and analysis}
