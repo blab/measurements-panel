@@ -15,7 +15,7 @@ rule all:
     input:
         expand("auspice/measurements-panel_flu_seasonal_{lineage}_ha.json", lineage=config["lineages"]),
         expand("auspice/measurements-panel_flu_seasonal_{lineage}_ha_measurements.json", lineage=config["lineages"]),
-        "manuscript/figures/figures/figure-1-static-titer-visualizations.pdf",
+        "manuscript/figures/figure-1-static-titer-visualizations.pdf",
 
 
 rule prepare_titers:
@@ -366,7 +366,7 @@ rule plot_antigenic_distances:
         distances="results/h3n2/antigenic_distances_between_strains.tsv",
         tree_screenshot="manuscript/figures/figure-1a-titer-distance-in-phylogeny.png",
     output:
-        plot="manuscript/figures/figures/figure-1-static-titer-visualizations.pdf",
+        plot="manuscript/figures/figure-1-static-titer-visualizations.pdf",
     benchmark:
         "benchmarks/plot_antigenic_distances.txt"
     conda:
