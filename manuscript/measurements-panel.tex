@@ -115,16 +115,9 @@ Additionally, this view shows a summary statistic instead of the underlying dist
 
 \subsection{Visual design}
 
-Given the benefits and costs of existing visualizations of antigenic distances, we applied user-driven design and standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
-To this end, we established the goals of users who would interact with our visualizations, identified the most effective encodings for the data users needed to explore, and composed an interactive visualization from these encodings to address the desired goals.
+To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the user goals described above and standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
+The static heatmaps addressed most of the user goals except for communicating which extant clades were missing measurements.
 
-Based on informal user interviews with collaborators at the Influenza Division of the Centers for Disease Control and Prevention, we identified a list of primary goals for the phylogenetic and heatmap visualizations.
-Users wanted to know which currently circulating clades of influenza have measurements against a given serum, to prioritize which clades to select test viruses from in future HI experiments.
-Additionally, users wanted to know which available antiserum has the lowest antigenic distance across all circulating clades, to identify potential vaccine candidates.
-Finally, users wanted to compare the antigenic diversity of extant clades.
-From these user goals, we decided that an optimal visualization would summarize the distribution of antigenic distances by antiserum and clade.
-
-We observed that the existing titer matrix heatmaps addressed most of the user goals except for communicating which extant clades were missing measurements.
 Both the phylogenetic and heatmap views use color to encode the most relevant quantitative data of antigenic distance.
 Previous visualization design research has shown that quantitative data are more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
 In the phylogenetic view, the two available positional axes are used to represent time and the unitless phylogenetic position of nodes.
