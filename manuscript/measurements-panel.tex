@@ -90,13 +90,12 @@ For example, antigenic cartography places high-dimensional antigenic distances i
 These map-like visualizations reveal long-term trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
 However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
 
-To understand near-term patterns of antigenic drift that would require an update to the vaccine, WHO decision makers need to answer specific questions.
-First, decision makers need to know which available vaccine candidates have titer measurements against currently circulating clades.
-This information determines which clades need additional HI experiments with specific vaccine candidates.
-Second, decision makers need to know which available vaccine candidates have the lowest antigenic distance across recent clades.
-These vaccine candidates are said to effectively ``cover'' circulating clades.
-In the event that no single vaccine candidate can cover all circulating clades, decision makers look for a candidate that will cover the clades that are most likely to succeed in the upcoming influenza season.
-Determining the vaccine candidate that most effectively covers recent clades requires a comparison of antigenic distances across all available vaccine candidates.
+To understand short-term patterns of antigenic drift that would require an update to the vaccine, WHO decision makers need to answer specific questions.
+These include a) which available vaccine candidates require additional titer measurements against currently circulating clades, b) which vaccine candidates have the lowest antigenic distance to each clade, and c) what is the antigenic diversity of recent clades.
+In practice, decision makers must choose the next vaccine candidate from a small pool of viable options.
+The best candidate will have titer measurements against all current clades and have the lowest antigenic distance across these clades.
+Such candidates are said to effectively ``cover'' currently circulating clades.
+Determining the vaccine candidate that most effectively covers recent clades requires a direct comparison of antigenic distances across all available vaccine candidates.
 
 We have previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
 The first visualization is an interactive phylogenetic view implemented in the genomic epidemiology tool \emph{nextflu} \citep{NeherBedford2015,NeherBedford2018}.
@@ -115,20 +114,20 @@ Additionally, this view shows a summary statistic instead of the underlying dist
 
 \subsection{Visual design}
 
-To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the user goals described above and standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
-The static heatmaps addressed most of the user goals except for communicating which extant clades were missing measurements.
+To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
+Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
+Both previous visualizations effectively obscure or hide the underlying distributions of the raw data.
+Since visualization of these distributions can improve confidence during the decision making process, we treated the need to view these distributions as an auxillary user goal \citep{}.
 
-Both the phylogenetic and heatmap views use color to encode the most relevant quantitative data of antigenic distance.
-Previous visualization design research has shown that quantitative data are more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
-In the phylogenetic view, the two available positional axes are used to represent time and the unitless phylogenetic position of nodes.
-Neither of these data are relevant to the user goals described above.
-In the titer matrix heatmaps, the two positional axes are used to encode two nominal data types (reference virus name and clade name).
+In the context of visual design principles, both the phylogenetic and heatmap views encode the most relevant quantitative data of antigenic distance with color.
+However, quantitative data can be more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
+In the phylogenetic view, the two available positional axes represent time and the unitless phylogenetic position of nodes, neither of which are relevant to the user goals described above.
+In the heatmaps, the two positional axes encode two nominal data types.
 
-We reasoned that we could make a more effective visualization that addressed most user goals by changing the encoding of data in the titer matrix heatmaps.
-Specifically, we chose to temporally omit clade names from the visualization and encode the antigenic distances on the positional x-axis.
-By encoding antigenic distance on a positional axis, we could annotate relevant thresholds for antigenic distances, show all available measurements for each reference virus at once, and display a summary statistic (mean antigenic distance) for each reference virus.
-We chose to maintain the encoding of nominal reference virus names on the y-axis, since most user goals require interrogation of specific antisera.
-With color available as an additional channel, we decided to encode the antigenic class of each antigenic distance with color.
+We reasoned that we could make a more effective visualization that addressed all user goals by simply changing the encoding of data in the heatmaps.
+To this end, we swapped the encoding of antigenic distances and test clades, encoding quantitative distances on the x-axis positional scale and encoding nominal test clades with a color scale.
+The positional encoding of antigenic distances allowed us to visually encode relevant thresholds for decision making (i.e., $x = 2\log_{2}$), show all available measurements for each reference virus at once, and display a summary statistic (mean and standard deviation of antigenic distances) for each reference virus.
+We retained the encoding of nominal reference virus names on the y-axis, since most user goals require comparison of distances between specific vaccine candidates.
 
 \subsection{Data curation}
 
