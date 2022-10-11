@@ -157,21 +157,25 @@ To construct the measurements panel JSON, we normalized the raw HI titer measure
 \subsection{Interactive visualization of titer measurements}
 
 Our goal for incorporating the measurements panel into Auspice is to allow users to explore relationships between the genetic and serology data in one interactive visualization.
-Test viruses of the titer data are directly linked to the viruses displayed in the phylogeny tree via their strain names to ensure that any interactions with the tree are also applied to the titer data.
-Filters applied to the tree via the date slider (Figure~\ref{fig:2}a), the data filter (Figure~\ref{fig:2}d), or directly filtering the tree by clicking on branches and tips also filters the titer data.
-This allows users to easily focus on a subset of the titer measurements that is phylogenetically relevant, such as examining the measurements of viruses in recently circulating clades.
-The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogeny tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of data to the titer measurements.
-This is especially useful for applying genotypes to the titer data, allowing users to reveal potential cause and effect relationships between mutations and titer measurements.
+Test viruses of the titer data are directly linked to the viruses displayed in the phylogeny tree via their strain names to ensure that any interactions with the tree also affect the measurements displayed.
+Filters applied to the tree via the date slider (Figure~\ref{fig:2}a), the data filter (Figure~\ref{fig:2}d), or clicking on tree branches to zoom into clades filters measurements to only matching test viruses.
+Users can easily focus on a subset of measurements that is phylogenetically relevant and examine the measurements of test viruses in recently circulating clades.
+The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogeny tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of nominal data to the titer measurements.
+This is especially useful for applying genotypes to the titer data, allowing users to reveal potential cause and effect relationships between mutations and antigenic drifts quantified in titer measurements.
 
-The measurements JSON can include multiple collections of titers for a single phylogeny tree and users can use the collection dropdown (Figure~\ref{fig:2}e) to change the collection displayed.
-This allows users to examine different sets of data for the same phylogeny tree such as changing between cell and egg passaged virus titers.
-Users can change the subplots displayed by specify different grouping categories for the measurements using the group by dropdown (Figure~\ref{fig:2}f).
-In our case, the most useful grouping is the reference strain so that we can compare the reference strain (Figure~\ref{fig:2}j) to the displayed measurements.
-The data display can be toggled between mean with standard deviation and the raw individual measurements (Figure~\ref{fig:2}g).
-When viewing the mean with standard deviation, the measurements are grouped by their coloring values to calculate the mean for each coloring value.
-The overall mean for each grouping can be toggled (Figure~\ref{fig:2}h) to show the overall mean with standard deviation that is not split into the coloring groups.
-The measurements threshold can be toggled (Figure~\ref{fig:2}i) for a clear demarcation of a threshold value.
-For titer measurements, this is the $\log_{2}$ distance of 2 to easily show when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
+The measurements JSON can include multiple collections of titers for a single phylogeny tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
+Users can then review different sets of data for the same phylogeny tree such as separate measurements of cell and egg passaged virus titers.
+Within each collection, users can compare measurements across different groupings by changing the grouping category with the group by dropdown (Figure~\ref{fig:2}f).
+For vaccine selection, the most useful grouping is the reference strain (Figure~\ref{fig:2}j) to directly compare titers for individual vaccine candidates.
+Other groupings such as data source or ferret serum can be used to explore the variability of the titer measurements.
+The overall mean for each grouping can then be toggled (Figure~\ref{fig:2}h) for whole group comparisons.
+
+The data display can be switched between mean with standard deviation and raw individual measurements (Figure~\ref{fig:2}g).
+The means are calculated per color attribute to allow for comparisons across attributes within each group.
+This view maintains the ability to view the mean antigenic distance for test viruses within each clade that we had implemented in the static heat maps.
+The raw measurements view plots each individual measurement to give users a detailed view of the quantity and distribution of titers, which can inform design decisions for future titer experiments.
+The titers threshold can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a binary view of when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
+We will discuss the application of these features in detail in two case studies in the following sections.
 
 \subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
 
