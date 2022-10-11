@@ -68,46 +68,48 @@ We show how the combined interactive visualizations may be used by decision-make
 
 \section{Introduction}
 
-Seasonal influenza A/H3N2 viruses evolve by acquiring mutations that allow them to escape antibodies from previous infections or vaccinations \citep{Petrova2018}.
+Seasonal influenza A/H3N2 viruses primarily evolve by acquiring mutations that allow them to escape antibodies from previous infections or vaccinations \citep{Petrova2018}.
 This process, known as antigenic drift, changes the appearance of viral surface proteins hemagglutinin and neuraminidase.
-Hemagglutinin (HA) is the primary target of our adaptive immunity and the primary component of the seasonal influenza vaccine \citep{}.
+Hemagglutinin (HA) is the primary target of our adaptive immunity and the primary component of the seasonal influenza vaccine.
 Therefore, continued antigenic drift in HA necessitates regular updates to the seasonal influenza vaccine.
-
-The World Health Organization's (WHO's) Global Influenza Surveillance and Response System (GISRS) collects HA genome sequences and performs experimental measurements to track antigenic drift throughout the year \citep{Morris:2017ea}.
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) collects HA genome sequences and performs experimental measurements to track antigenic drift throughout the year \citep{Morris:2017ea}.
 HA genome sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor and share the same mutations that may contribute to antigenic drift.
 Experimental measurements of antigenic drift quantify how well viruses from different clades can escape detection by antibodies against vaccine candidates.
+
 The gold standard of these experimental measurements is the hemagglutination inhibition (HI) assay \citep{hirst1943studies}.
-
-Through a series of two-fold dilutions, HI assays measure the minimum concentration or ``titer'' of antibodies raised against a given reference virus required to prevent a given test virus from binding to red blood cells.
+HI assays measure the minimum concentration or ``titer'' of antibodies required to prevent a given test virus from binding to red blood cells.
+Typically, antibodies come from previously uninfected ferrets who are then infected with a specific reference virus (e.g., a vaccine candidate).
+Each HI assay requires a series of two-fold dilutions of ferret antibodies to determine the minimum titer that inhibits binding.
 The higher the antibody titer required to prevent binding, the more antigenically drifted the test virus is from the reference virus.
-To enable comparison between measurements, researchers normalize titers for reference-specific effects and convert values to a $\log_{2}$ scale.
-The resulting values represent the magnitude of antigenic distance between a given reference virus (e.g., a vaccine candidate) and other test viruses.
-The WHO typically updates vaccines when the current vaccine has an antigenic distance greater than ${2\log_{2}}$ to other recently circulating viruses \citep{Katz2011}.
+To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Neher:2016hy}.
+The resulting values represent the magnitude of antigenic distance between a given reference virus and other test viruses.
+Traditionally, viruses with an antigenic distance greater than $2\log_{2}$ units are considered antigenically distinct \citep{Katz2011}.
 
-Historically, researchers have summarized these pairwise antigenic distances with statistical or visual representations, to understand long-term patterns of antigenic drift.
-For example, antigenic cartography places multidimensional antigenic distances in a two-dimensional space using multidimensional scaling \citep{Smith:2004jc,Bedford:2014bf}.
-These map-like visualizations reveal long-term patterns and trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
+To understand long-term patterns of antigenic drift, researchers have summarized these pairwise antigenic distances with statistical or visual representations.
+For example, antigenic cartography places high-dimensional antigenic distances in a two-dimensional space using multidimensional scaling \citep{Smith:2004jc,Bedford:2014bf}.
+These map-like visualizations reveal long-term trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
 However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
 
 To understand near-term patterns of antigenic drift that would require an update to the vaccine, WHO decision makers need to answer specific questions.
-First, decision makers need to know which vaccine candidates have titer measurements against currently circulating groups of closely-related influenza viruses.
-This information is used to prioritize which clades need additional HI experiments with specific vaccine candidate references.
-Additionally, decision makers need to know which available vaccine candidates have the lowest antigenic distance across all circulating clades, to identify the most effective candidates.
-Finally, these same researchers need to compare the antigenic diversity of extant clades, to understand how well a single vaccine candidate will cover those clades.
+First, decision makers need to know which available vaccine candidates have titer measurements against currently circulating clades.
+This information determines which clades need additional HI experiments with specific vaccine candidates.
+Second, decision makers need to know which available vaccine candidates have the lowest antigenic distance across recent clades.
+These vaccine candidates are said to effectively ``cover'' circulating clades.
+In the event that no single vaccine candidate can cover all circulating clades, decision makers look for a candidate that will cover the clades that are most likely to succeed in the upcoming influenza season.
+Determining the vaccine candidate that most effectively covers recent clades requires a comparison of antigenic distances across all available vaccine candidates.
 
 We have previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
 The first visualization is an interactive phylogenetic view implemented in the genomic epidemiology tool \emph{nextflu} \citep{NeherBedford2015,NeherBedford2018}.
-The user selects a specific reference virus by selecting a ``gear'' icon drawn on the phylogeny where the reference virus occurs.
-The tool plots the pairwise antigenic distances between the selected reference virus's antisera and the corresponding test viruses in the tree using color to represent the distance values (Figure~\ref{fig:1}A).
-This representation of the data reveals phylogenetic clades that are antigenically distance from a given vaccine candidate or that are missing measurements from that antiserum.
-Influenza virologists use this information to select potential vaccine candidates that ``cover'' the most extant clades and prioritize which HI assays to perform next.
-The benefits of visualizing the phylogenetic context of antigenic distances for a single antiserum are balanced by visual design costs of not showing antigenic distances for all antisera in a single view.
+When the user selects a given reference virus from the phylogeny (by selecting a ``gear'' icon), the tool plots the pairwise antigenic distances between that reference and the corresponding test viruses in the tree using color to represent the distance values (Figure~\ref{fig:1}A).
+This representation reveals clades that the selected reference virus may or may not cover and which clades lack measurements against the reference.
+While this view provides phylogenetic context of titer measurements and shows the individual pairwise measurements, it does not support direct comparison of antigenic distances from different vaccine candidates.
+Instead, users must quickly toggle between different vaccine candidates in the tree to get a sense of how well different viruses may perform.
 
-Another recent representation of pairwise antigenic distances attempts to address the limitations of the phylogenetic visualization.
-This representation summarizes the mean antigenic distances between a subset of relevant reference viruses (i.e., likely vaccine candidates) and all tests viruses within each extant clade.
-The resulting heatmaps use the x-axis to encode phylogenetic clades, the y-axis to encode reference viruses, and color and text to encode the mean $\log_{2}$ distance between a given reference virus and corresponding test viruses (Figure~\ref{fig:1}B).
-These static heatmaps express more data than the phylogenetic representation, allowing decision-makers to identify qualitative trends across antisera and clades in biannual reports to the World Health Organization .
-As with all heatmaps, these titer matrices suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a spatial scale.
+To complement the interactive phylogenetic visualization, we also developed a static heatmap visualization that summarizes the mean antigenic distances between a subset of vaccine candidates and all tests viruses within each extant clade.
+The resulting heatmaps use the x-axis to encode the names of major clades, the y-axis to encode the names of reference viruses, and color and text to encode the mean $\log_{2}$ distance between a given reference virus and corresponding test viruses in each clade (Figure~\ref{fig:1}B).
+These heatmaps allow decision makers to directly compare average antigenic distances for different vaccine candidates and quantify how these candidates cover extant clades.
+However, these heatmaps suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a spatial scale.
+Additionally, this view shows a summary statistic instead of the underlying distributions of the data, concealing the number and variance of measurements for each reference virus.
 
 \section{Methods}
 
