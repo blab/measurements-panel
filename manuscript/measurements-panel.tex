@@ -116,7 +116,7 @@ Additionally, this view shows a summary statistic instead of the underlying dist
 
 To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
 Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
-Both previous visualizations effectively obscure or hide the underlying distributions of the raw data.
+Our two previous visualizations either obscured or hid the underlying distributions of the raw data.
 Since visualization of these distributions can improve confidence during the decision making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxillary user goal.
 
 In the context of visual design principles, both the phylogenetic and heatmap views encode the most relevant quantitative data of antigenic distance with color.
@@ -140,7 +140,6 @@ The application can be cloned and run locally or users can use Auspice through t
 Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data locally in their own browser.
 Visualizations can be also shared with others through \url{https://nextstrain.org/}.
 Full documentation for sharing analyses through Nextstrain can be found at \url{https://docs.nextstrain.org/en/latest/guides/share/index.html}.
-The visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \subsection{Data curation and analysis}
 
@@ -148,9 +147,10 @@ We evaluated the new measurements panel by constructing a Nextstrain analysis \c
 A full data curation guide is available online at \url{https://github.com/blab/measurements-panel/tree/main/data#readme} and a full guide to running the bioinformatics analyses is available at \url{https://github.com/blab/measurements-panel#readme}.
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
-We parsed metadata including viral strain name, database accession, and collect date from the sequence headers with \texttt{augur parse}.
+We parsed metadata including viral strain name, database accession, and collection date from the sequence headers with \texttt{augur parse}.
 We constructed an annotated phylogenetic tree and measurements panel with Augur commands as part of a workflow implemented with Snakemake \citep{Molder2021}.
 To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
+The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
 
@@ -159,9 +159,9 @@ To construct the measurements panel JSON, we normalized the raw HI titer measure
 Our goal for incorporating the measurements panel into Auspice is to allow users to explore relationships between the genetic and serological data in one interactive visualization.
 Test viruses of the titer data are directly linked by name to the viruses displayed in the phylogenetic tree, to ensure that any interactions with the tree also affect the measurements displayed.
 When users filter the tree by date (Figure~\ref{fig:2}a), metadata attributes of viruses (Figure~\ref{fig:2}d), or subtrees selected by clicking on a corresponding tree branch, the measurements panel updates to reflect only the matching test viruses.
-Users can easily focus on a subset of measurements that is phylogenetically relevant and examine the measurements of test viruses in recently circulating clades.
+Users can easily focus on a subset of phylogenetically relevant measurements and examine the measurements of test viruses in recently circulating clades.
 The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogenetic tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of nominal data to the titer measurements.
-This coloring is especially useful for viewing titer data by genotypes of test viruses, allowing users to inspect relationships between mutations and antigenic drift quantified by titer measurements.
+This coloring is especially useful for viewing titer data by genotypes of test viruses, allowing users to inspect relationships between specific mutations in HA and antigenic drift quantified by titer measurements.
 
 The measurements JSON can include multiple collections of titers for a single phylogenetic tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
 Users can then review different sets of data for the same phylogenetic tree such as separate measurements of cell- and egg-passaged virus titers.
@@ -177,7 +177,7 @@ The raw measurements view plots each individual measurement to give users a deta
 The titers threshold can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a binary view of when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
 We discuss the application of these features in detail in two case studies in the following sections.
 
-\subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
+\subsection{Case study 1: Retrospective vaccine strain selection in fall 2009}
 
 The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
 The northern hemisphere VCM occurs in February or March ahead of a winter season in October through April.
@@ -281,7 +281,7 @@ A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select
 To compare multiple vaccine candidates, users have to select different strains manually and toggle between them.
 B) Heatmap visualization of mean serological distances between multiple vaccine candidates (reference strains on the y-axis) and strains in currently circulating phylogenetic clades.
 Heatmaps encode distance by color and display the distance as text, allowing the user to compare how well multiple vaccine candidates might protect against circulating strains.
-C) Interval plot of mean +/- 89\% confidence interval values of serological distances between vaccine candidates (y-axis) and strains in currently circulating clades.
+C) Interval plot of mean $\pm$ 89\% confidence interval values of serological distances between vaccine candidates (y-axis) and strains in currently circulating clades.
 Unlike the heatmap visualization, the interval plot encodes serological distance with a spatial scale (the x-axis) instead of color and encodes clade membership with color instead of the spatial scale.
 The vertical gray lines represent the threshold above which strains are considered antigenically distinct (x=2, solid line) and where strains are antigenically identical (x=0, dashed line).
 This view allows users to compare multiple vaccine candidates, identify the candidate that protects specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying serological measurements.
