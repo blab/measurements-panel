@@ -277,15 +277,15 @@ The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF RE
   \end{center}
   \caption{
     Previous approaches to static visualization of serological data for seasonal influenza vaccine composition reports.
-A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select a single vaccine candidate (e.g., A/Stockholm/6/2014) and see how well that strain might protect against other circulating strains in their genetic context based on the serological distance encoded by color (orange and red color indicate greater distance and less protection by the selected strain).
-To compare multiple vaccine candidates, users have to select different strains manually and toggle between them.
-B) Heatmap visualization of mean serological distances between multiple vaccine candidates (reference strains on the y-axis) and strains in currently circulating phylogenetic clades.
-Heatmaps encode distance by color and display the distance as text, allowing the user to compare how well multiple vaccine candidates might protect against circulating strains.
-C) Interval plot of mean $\pm$ 89\% confidence interval values of serological distances between vaccine candidates (y-axis) and strains in currently circulating clades.
-Unlike the heatmap visualization, the interval plot encodes serological distance with a spatial scale (the x-axis) instead of color and encodes clade membership with color instead of the spatial scale.
+A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select a single vaccine candidate (e.g., A/Stockholm/6/2014) and see how well that strain might protect against other circulating viruses in their genetic context based on the antigenic distance encoded by color (orange and red color indicate greater distance and less protection by the selected strain).
+To compare multiple vaccine candidates, users have to select different reference viruses manually and toggle between them.
+B) Heatmap visualization of mean antigenic distances between multiple vaccine candidates (reference viruses on the y-axis) and viruses in currently circulating phylogenetic clades.
+Heatmaps encode distance by color and text, allowing the user to compare how well multiple vaccine candidates might protect against circulating viruses.
+C) Interval plot of mean $\pm$ 89\% confidence interval values of antigenic distances between vaccine candidates (y-axis) and viruses in currently circulating clades.
+Unlike the heatmap visualization, the interval plot encodes distance with a spatial scale (the x-axis) instead of color and encodes clades with color instead of the spatial scale.
 The vertical gray lines represent the threshold above which strains are considered antigenically distinct (x=2, solid line) and where strains are antigenically identical (x=0, dashed line).
-This view allows users to compare multiple vaccine candidates, identify the candidate that protects specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying serological measurements.
-D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test strains in each clade.
+This view allows users to compare multiple vaccine candidates, identify the candidate that covers specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying HI measurements.
+D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test viruses in each clade.
 This view allows users to perform the same tasks as the interval plot, but it also allows users to identify how many measurements support the summary statistics for a given vaccine candidate and identify multiple modes in the raw data distribution that could indicate within-clade antigenic variation.
 }\label{fig:1}
 \end{figure}
@@ -319,26 +319,28 @@ m) The x-axis of the measurements plot shows the range of measurements values in
     \includegraphics[width=\textwidth]{figures/figure-3.png}
   \end{center}
   \caption{
-    Serological analysis of the fall 2009 (southern hemisphere) vaccine selection candidates.
-    A) Phylogenetic tree summarizing the clade turnover. At the selection deadline (VCM) clade 144K (light blue) was dominant, with A/Perth/16/2009 the candidate reference sera from this clade. A/Brisbane/10/2007 was used in the previous season's vaccine.
-    B) Neutralization titers against three reference sera, representing candidate vaccine strains, using data available prior to the VCM. $\log_{2}>2$ indicates inability to cover viruses from that clade.
-    C) Same as (B) but including test viruses collected after the VCM, which were mainly from clade 158N/189K.
+    Serological analysis of H3N2 clades around the time of the southern hemisphere vaccine composition meeting (VCM) for the 2010 influenza season.
+    A) Phylogenetic tree summarizing the clades circulating before and after the VCM in September 2009.
+    At the time of the VCM, clade 144K (light blue) was dominant, and A/Perth/16/2009 was the vaccine candidate from this clade.
+    A/Brisbane/10/2007 (clade 140I) had been the southern hemisphere vaccine in 2008 and 2009 and A/Wisconsin/67/2005 (clade 193F/225N) had been the vaccine in 2007.
+    B) HI titers against three vaccine candidates, using only data available prior to the final decision from the VCM (September 25, 2009).
+    HI titers greater than $2\log_{2}$ indicate the inability of previous vaccines to cover viruses from the most recent clades.
+    C) Same as (B) but including test viruses and HI measurements collected after the VCM, which were mainly from clade 158N/189K.
+    With mean HI titers less than $2\log_{2}$, A/Perth/16/2009 covered this successful clade better than the previous vaccines.
   }
   \label{fig:3}
 \end{figure}
-
-
 
 \begin{figure}[h!]
   \begin{center}
     \includegraphics[width=\textwidth]{figures/figure-4.png}
   \end{center}
   \caption{
-    Neutralization of clade 144V viruses by clade 144V sera.
+    Antigenic distances from HI assays between clade 144V reference and test viruses, highlighting two reference viruses with similar mean distances and divergent raw distributions.
     A) Summary phylogenetic tree with clade 144V highlighted in red.
-    B) Neutralization results when viewed as mean $\pm$ standard deviation show a wide range of values indicating a large amount of antigenic diversity.
-    C) When viewing the individual measurements themselves, they suggest a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference strain compared to an apparently unimodal distribution for the A/Beijing/353/1989 reference strain.
-    D) Coloring these measurements by RBD site HA1:135 reveals a  potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring by clade alone.
+    B) HI measurements when viewed as mean $\pm$ standard deviation show similar average values for two reference viruses and a wide range of antigenic diversity per reference.
+    C) Viewing the individual measurements reveals a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference virus compared to an apparently unimodal distribution for the A/Beijing/353/1989 reference virus.
+    D) Coloring individual measurements by genotypes as the putative antigenic site HA1:135 shows a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring by clade alone.
   }
   \label{fig:4}
 \end{figure}
