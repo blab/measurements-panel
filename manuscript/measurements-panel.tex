@@ -203,17 +203,32 @@ A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine strain for the 2010-
 
 \subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
 
-All else being equal, genetically similar strains will have low (better) HI titer measurements than antigenically diverged strains.
-While clade definitions attempt to capture antigenic similarity, mutations may still be present within a clade which result in differing responses of reference sera to the test strains in the clade.
+Influenza researchers often define clades of H3N2 viruses based on the presence of mutations that have been previously shown to enable viruses to escape existing immunity \citep{Wolf:2006da,Shih:2007bd,Koel:2013jz}.
+The genetic similarity of viruses in the same clade typically corresponds with antigenic similarity of the same viruses as measured by HI assays.
+However, new mutations may arise within a clade that cause test viruses with those mutations to differ antigenically from earlier viruses in the same clade.
+Here, we demonstrate how aggregation of antigenic distances by clade can obscure the emergence of antigenically novel test viruses and how visualization of raw measurements can reveal these important patterns.
 
+Using the same data from the previous case study, we noted that clade 144V circulated between 1984 and 1992 (Figure~\ref{fig:4}A) and that multiple HI measurements existed for reference and test viruses from this clade.
+We identified two reference viruses in 144V with similar average HI measurements and divergent raw distributions (Figure~\ref{fig:4}B).
+A/Shanghai/11/1987 had a mean antigenic distance of 1.64 $\pm$ 2.53 units, while A/Beijing/353/1989 had a mean distance of 1.13 $\pm$ 1.42 units.
+The distributions of raw HI measurements reveal a bimodal distribution for A/Shanghai/11/1987 data and a unimodal distribution for A/Beijing/353/1989 (Figure~\ref{fig:4}C).
+We hypothesized that antigenic mutations could explain the two clusters of test viruses in the A/Shanghai/11/1987 data.
 
-Clade 144V circulated between 1984 and 1992 (Figure~\ref{fig:4}A) and multiple reference sera from this clade have been used in HI assays.
-Looking at two such reference sera, there is a wide distribution of titer measurements when tested against viruses from the same clade; the two sera shown in Figure~\ref{fig:4}B have titer values which range from antigenically similar to distinct.
-Looking at the raw measurements themselves Figure~\ref{fig:4}C indicates a potentially bimodal distribution for the A/Shanghai/11/1987 sera, which is hidden by looking at the distribution summaries themselves.
-Nextstrain allows us to interrogate the mutations observed within a clade such as 144V via a number of approaches, and the entropy panel indicates that codon HA1:135 has the highest entropy among 144V genomes, indicating that multiple amino acids are present in a large fraction of viruses here.
-Coloring the data by genotype HA1:135 (Figure~\ref{fig:4}D) not only indicates that these residue changes may explain the bimodal distribution though to exist in A/Shanghai/11/1987 responses, but also indicates that this bimodality may also be present in A/Beijing/252/1989 results; these sera contain HA1:135G and HA1:135E, respectively, which is a plausible explanation for why the former has lower titer scores against HA1:135G test viruses and the later has lower titer scores against HA1:135E.
-HA:135 is located in the receptor binding domain (citation needed) and is thus a very plausible driver of such distinct inhibition responses.
+Nextstrain's Auspice tool provides multiple approaches to interrogate the mutations observed within a clade such as 144V.
+For example, the entropy panel quantifies the diversity of mutations present at each position in a given viral genome with higher values indicating more distinct amino acid mutations at a single position.
+We observed that position HA1:135 had the highest entropy among the 144V HA genomes.
+This position was previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
+Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at this position.
+The genotype-specific coloring shows three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
+This view also reveals that test viruses with same 135G genotype as A/Shanghai/11/1987 have lower antigenic distances (mean of -1.00 $\pm$ 1.34 units), while viruses with the derived 135E and 135D genotypes have higher antigenic distances (3.74 $\pm$ 0.69 and 2.73 $\pm$ 0.89, respectively).
+Measurements against A/Beijing/353/1989 show the inverse pattern with lower distances from this reference to test viruses with 135E and 135D (0.46 $\pm$ 0.79 and 0.72 $\pm$ 0.71, respectively) and higher distances to 135G (3.05 $\pm$ 1.18).
 
+These results demonstrate how summary statistics can obscure biologically relevant patterns in the raw data.
+They also show how the ability to interactively color data by different viral attributes like genotype can produce hypotheses to explain the patterns we see in the raw data.
+Importantly, these results do not confirm that the differences we observe in antigenic distances were caused by mutations at HA1:135.
+The same test viruses with derived 135 mutations also have mutations at two positions adjacent to HA's receptor binding site, HA1:145 and 193, where mutations have been previously shown to cause antigenic drift \citep{Koel:2013jz}.
+Confirmation of mutational effects requires further experimental work.
+However, this interactive visualization tool enables decision makers to explore their data and generate new hypotheses in ways that previous tools did not.
 
 \section{Discussion}
 
