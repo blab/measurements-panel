@@ -134,7 +134,7 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
 This implementation maintains the phylogenetic context and interactive data exploration provided by the \emph{nextflu} implementation.
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
-The phylogeny tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
+The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
 Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data locally in their own browser.
@@ -156,17 +156,17 @@ To construct the measurements panel JSON, we normalized the raw HI titer measure
 
 \subsection{Interactive visualization of titer measurements}
 
-Our goal for incorporating the measurements panel into Auspice is to allow users to explore relationships between the genetic and serology data in one interactive visualization.
-Test viruses of the titer data are directly linked to the viruses displayed in the phylogeny tree via their strain names to ensure that any interactions with the tree also affect the measurements displayed.
-Filters applied to the tree via the date slider (Figure~\ref{fig:2}a), the data filter (Figure~\ref{fig:2}d), or clicking on tree branches to zoom into clades filters measurements to only matching test viruses.
+Our goal for incorporating the measurements panel into Auspice is to allow users to explore relationships between the genetic and serological data in one interactive visualization.
+Test viruses of the titer data are directly linked by name to the viruses displayed in the phylogenetic tree, to ensure that any interactions with the tree also affect the measurements displayed.
+When users filter the tree by date (Figure~\ref{fig:2}a), metadata attributes of viruses (Figure~\ref{fig:2}d), or subtrees selected by clicking on a corresponding tree branch, the measurements panel updates to reflect only the matching test viruses.
 Users can easily focus on a subset of measurements that is phylogenetically relevant and examine the measurements of test viruses in recently circulating clades.
-The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogeny tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of nominal data to the titer measurements.
-This is especially useful for applying genotypes to the titer data, allowing users to reveal potential cause and effect relationships between mutations and antigenic drifts quantified in titer measurements.
+The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogenetic tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of nominal data to the titer measurements.
+This coloring is especially useful for viewing titer data by genotypes of test viruses, allowing users to inspect relationships between mutations and antigenic drift quantified by titer measurements.
 
-The measurements JSON can include multiple collections of titers for a single phylogeny tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
-Users can then review different sets of data for the same phylogeny tree such as separate measurements of cell and egg passaged virus titers.
-Within each collection, users can compare measurements across different groupings by changing the grouping category with the group by dropdown (Figure~\ref{fig:2}f).
-For vaccine selection, the most useful grouping is the reference strain (Figure~\ref{fig:2}j) to directly compare titers for individual vaccine candidates.
+The measurements JSON can include multiple collections of titers for a single phylogenetic tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
+Users can then review different sets of data for the same phylogenetic tree such as separate measurements of cell- and egg-passaged virus titers.
+Within each collection, users can compare measurements across different groupings by changing the grouping category with the ``group by'' dropdown (Figure~\ref{fig:2}f).
+For vaccine selection, grouping by the reference strain (Figure~\ref{fig:2}j) allows decision makers to directly compare titers across multiple vaccine candidates.
 Other groupings such as data source or ferret serum can be used to explore the variability of the titer measurements.
 The overall mean for each grouping can then be toggled (Figure~\ref{fig:2}h) for whole group comparisons.
 
@@ -175,7 +175,7 @@ The means are calculated per color attribute to allow for comparisons across att
 This view maintains the ability to view the mean antigenic distance for test viruses within each clade that we had implemented in the static heat maps.
 The raw measurements view plots each individual measurement to give users a detailed view of the quantity and distribution of titers, which can inform design decisions for future titer experiments.
 The titers threshold can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a binary view of when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
-We will discuss the application of these features in detail in two case studies in the following sections.
+We discuss the application of these features in detail in two case studies in the following sections.
 
 \subsection{Case study 1: Retrospective vaccine strain selection in Fall 2009}
 
@@ -280,7 +280,7 @@ This view allows users to perform the same tasks as the interval plot, but it al
     \includegraphics[width=\textwidth]{figures/figure-2-screen-shot}
   \end{center}
   \caption{
-    Screenshot of Auspice with the sidebar controls, the phylogeny tree panel, and the measurements panel.
+    Screenshot of Auspice with the sidebar controls, the phylogenetic tree panel, and the measurements panel.
 a) Date range slider to filter both tree and measurements by the test virus sample date.
 b) Color-by dropdown to change the attribute to use for coloring the tree and measurements.
 c) Legend for colors and their corresponding values linked to viruses in the tree and measurements.
