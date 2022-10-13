@@ -44,7 +44,7 @@ If you do not, [register for a GISAID account](https://gisaid.org/register/).
   6. Select "Download".
   7. Select "Sequences (DNA) as FASTA".
   8. Select "HA" from the "DNA" section.
-  9. Set the FASTA header string to `Isolate name|Isolate ID|Collection date`.
+  9. Set the FASTA header string to `Isolate name|Isolate ID|Collection date|Originating lab`.
   10. Select "Download".
   11. Save file as `GISAID_batch_{batch_number}.fasta`.
   12. Repeat steps 3-11 for the remaining batches.
@@ -71,7 +71,7 @@ augur parse \
   --sequences raw_h3n2_ha.fasta \
   --output-sequences parsed_h3n2_ha_sequences.fasta \
   --output-metadata parsed_h3n2_ha_metadata.tsv \
-  --fields strain accession date \
+  --fields strain accession date authors \
   --fix-dates monthfirst
 ```
 
@@ -97,7 +97,7 @@ tsv-join \
   --append-fields strain \
   -p bedford_ parsed_h3n2_ha_metadata_with_corrected_dates.tsv \
     | csvtk -t rename -f strain,bedford_strain -n database_strain,strain \
-    | csvtk -t cut -f 4,1,2,3 > h3n2_ha_metadata.tsv
+    | csvtk -t cut -f 5,1,2,3,4 > h3n2_ha_metadata.tsv
 ```
 
 The resulting TSV file has `strain` (from Bedford et al), `database_strain` (from database downloads), `accession`, and `date`.
