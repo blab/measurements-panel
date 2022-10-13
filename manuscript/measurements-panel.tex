@@ -104,10 +104,10 @@ This representation reveals clades that the selected reference virus may or may 
 While this view provides phylogenetic context of titer measurements and shows the individual pairwise measurements, it does not support direct comparison of antigenic distances from different vaccine candidates.
 Instead, users must quickly toggle between different vaccine candidates in the tree to get a sense of how well different viruses may perform.
 
-To complement the interactive phylogenetic visualization, we also developed a static heatmap visualization that summarizes the mean antigenic distances between a subset of vaccine candidates and all tests viruses within each extant clade.
+To complement the interactive phylogenetic visualization, we also developed a static heatmap visualization that summarizes the mean antigenic distances between a subset of vaccine candidates and all test viruses within each extant clade.
 The resulting heatmaps use the x-axis to encode the names of major clades, the y-axis to encode the names of reference viruses, and color and text to encode the mean $\log_{2}$ distance between a given reference virus and corresponding test viruses in each clade (Figure~\ref{fig:1}B).
-These heatmaps allow decision makers to directly compare average antigenic distances for different vaccine candidates and quantify how these candidates cover extant clades.
-However, these heatmaps suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a spatial scale.
+These heatmaps allow decision makers to directly compare average antigenic distances for different vaccine candidates and quantify how well these candidates cover extant clades.
+However, these heatmaps suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a positional encoding.
 Additionally, this view shows a summary statistic instead of the underlying distributions of the data, concealing the number and variance of measurements for each reference virus.
 
 \section{Methods}
@@ -117,16 +117,16 @@ Additionally, this view shows a summary statistic instead of the underlying dist
 To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
 Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
 Our two previous visualizations either obscured or hid the underlying distributions of the raw data.
-Since visualization of these distributions can improve confidence during the decision making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxiliary user goal.
+Since visualization of these distributions can improve confidence during the decision-making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxiliary user goal.
 
 In the context of visual design principles, both the phylogenetic and heatmap views encode the most relevant quantitative data of antigenic distance with color.
-However, quantitative data can be more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
-In the phylogenetic view, the two available positional axes represent time and the unitless phylogenetic position of nodes, neither of which are relevant to the user goals described above.
+However, quantitative data can be more effectively represented by positional encodings (e.g., x- or y-axis positions) whereas nominal data (e.g., names of phylogenetic clades) can be effectively encoded with color \citep{Mackinlay1986}.
+In \emph{nextflu}'s phylogenetic view, the two available positional axes represent time and the unitless phylogenetic position of nodes, neither of which are relevant to the user goals described above.
 In the heatmaps, the two positional axes encode two nominal data types.
 
 We reasoned that we could make a more effective visualization that addressed all user goals by simply changing the encoding of data in the heatmaps.
 To this end, we swapped the encoding of antigenic distances and test clades, encoding quantitative distances on the x-axis positional scale and encoding nominal test clades with a color scale.
-The positional encoding of antigenic distances allowed us to visually encode relevant thresholds for decision making (i.e., $x = 2\log_{2}$), show all available measurements for each reference virus at once, and display a summary statistic (mean and standard deviation of antigenic distances) for each reference virus.
+The positional encoding of antigenic distances allowed us to visually encode relevant thresholds for decision-making (e.g., $x = 2\log_{2}$), show all available measurements for each reference virus at once, and display a summary statistic (mean and standard deviation of antigenic distances) for each reference virus.
 We retained the encoding of nominal reference virus names on the y-axis, since most user goals require comparison of distances between specific vaccine candidates.
 
 \subsection{Implementation}
@@ -147,7 +147,7 @@ We evaluated the new measurements panel by constructing a Nextstrain analysis \c
 A full data curation guide is available online at \url{https://github.com/blab/measurements-panel/tree/main/data#readme} and a full guide to running the bioinformatics analyses is available at \url{https://github.com/blab/measurements-panel#readme}.
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
-We parsed metadata including viral strain name, database accession, and collection date from the sequence headers with \texttt{augur parse}.
+We parsed metadata including viral strain name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
 We constructed an annotated phylogenetic tree and measurements panel with Augur commands as part of a workflow implemented with Snakemake \citep{Molder2021}.
 To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
 The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
@@ -166,18 +166,18 @@ This coloring is especially useful for viewing titer data by genotypes of test v
 The measurements JSON can include multiple collections of titers for a single phylogenetic tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
 Users can then review different sets of data for the same phylogenetic tree such as separate measurements of cell- and egg-passaged virus titers.
 Within each collection, users can compare measurements across different groupings by changing the grouping category with the ``group by'' dropdown (Figure~\ref{fig:2}f).
-For vaccine selection, grouping by the reference strain (Figure~\ref{fig:2}j) allows decision makers to directly compare titers across multiple vaccine candidates.
+For vaccine selection, grouping by the reference virus (Figure~\ref{fig:2}j) allows decision makers to directly compare titers across multiple vaccine candidates.
 Other groupings such as data source or ferret serum can be used to explore the variability of the titer measurements.
 The overall mean for each grouping can then be toggled (Figure~\ref{fig:2}h) for whole group comparisons.
 
 The data display can be switched between mean with standard deviation and raw individual measurements (Figure~\ref{fig:2}g).
 The means are calculated per color attribute to allow for comparisons across attributes within each group.
-This view maintains the ability to view the mean antigenic distance for test viruses within each clade that we had implemented in the static heat maps.
+This view maintains the ability to view the mean antigenic distance for test viruses within each clade that we had implemented in the static heatmaps.
 The raw measurements view plots each individual measurement to give users a detailed view of the quantity and distribution of titers, which can inform design decisions for future titer experiments.
 The titers threshold can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a binary view of when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
 We discuss the application of these features in detail in two case studies in the following sections.
 
-\subsection{Case study 1: Retrospective vaccine strain selection in fall 2009}
+\subsection{Case study 1: Retrospective vaccine selection in fall 2009}
 
 The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
 The northern hemisphere VCM occurs in February or March ahead of a winter season in October through April.
@@ -192,7 +192,7 @@ The most recent H3N2 vaccine strain, A/Brisbane/10/2007, had been used for the t
 Prior to the A/Brisbane/10/2007 vaccine, A/Wisconsin/67/2005 had been the vaccine strain in the 2007 southern hemisphere season.
 While 173Q dominated the 2008-2009 season, 144K appeared to be dominant in September 2009.
 At the time of the VCM, titers for both A/Brisbane/10/2007 and A/Wisconsin/67/2005 against test viruses from 144K and 158N/189K exceeded the $2\log_{2}$ threshold (Figure~\ref{fig:3}B), indicating their inability to cover these recent clades.
-In contrast, a newer vaccine candidate from the 144K clade, A/Perth/16/2009, had mean titers less than $1\log_{2}$ from the same recent clades.
+In contrast, a newer vaccine candidate from the 144K clade, A/Perth/16/2009, had mean titers less than $1\log_{2}$ against the same recent clades.
 These results strongly supported an update from the previous vaccine strain to a vaccine based on A/Perth/16/2009.
 The WHO announced this decision on September 25, 2009.
 
@@ -211,7 +211,7 @@ Here, we demonstrate how aggregation of antigenic distances by clade can obscure
 Using the same data from the previous case study, we noted that clade 144V circulated between 1984 and 1992 (Figure~\ref{fig:4}A) and that multiple HI measurements existed for reference and test viruses from this clade.
 We identified two reference viruses in 144V with similar average HI measurements and divergent raw distributions (Figure~\ref{fig:4}B).
 A/Shanghai/11/1987 had a mean antigenic distance of 1.64 $\pm$ 2.53 units, while A/Beijing/353/1989 had a mean distance of 1.13 $\pm$ 1.42 units.
-The distributions of raw HI measurements reveal a bimodal distribution for A/Shanghai/11/1987 data and a unimodal distribution for A/Beijing/353/1989 (Figure~\ref{fig:4}C).
+The distributions of raw HI measurements revealed a bimodal distribution for A/Shanghai/11/1987 data and a unimodal distribution for A/Beijing/353/1989 (Figure~\ref{fig:4}C).
 We hypothesized that antigenic mutations could explain the two clusters of test viruses in the A/Shanghai/11/1987 data.
 
 Nextstrain's Auspice tool provides multiple approaches to interrogate the mutations observed within a clade such as 144V.
@@ -219,9 +219,9 @@ For example, the entropy panel quantifies the diversity of mutations present at 
 We observed that position HA1:135 had the highest entropy among the 144V HA genomes.
 This position was previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
 Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at this position.
-The genotype-specific coloring shows three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
-This view also reveals that test viruses with same 135G genotype as A/Shanghai/11/1987 have lower antigenic distances (mean of -1.00 $\pm$ 1.34 units), while viruses with the derived 135E and 135D genotypes have higher antigenic distances (3.74 $\pm$ 0.69 and 2.73 $\pm$ 0.89, respectively).
-Measurements against A/Beijing/353/1989 show the inverse pattern with lower distances from this reference to test viruses with 135E and 135D (0.46 $\pm$ 0.79 and 0.72 $\pm$ 0.71, respectively) and higher distances to 135G (3.05 $\pm$ 1.18).
+The genotype-specific coloring showed three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
+This view also revealed that test viruses with same 135G genotype as A/Shanghai/11/1987 had lower antigenic distances (mean of -1.00 $\pm$ 1.34 units), while viruses with the derived 135E and 135D genotypes had higher antigenic distances (3.74 $\pm$ 0.69 and 2.73 $\pm$ 0.89, respectively).
+Measurements against A/Beijing/353/1989 showed the inverse pattern with lower distances from this reference to test viruses with 135E and 135D (0.46 $\pm$ 0.79 and 0.72 $\pm$ 0.71, respectively) and higher distances to 135G (3.05 $\pm$ 1.18).
 
 These results demonstrate how summary statistics can obscure biologically relevant patterns in the raw data.
 They also show how the ability to interactively color data by different viral attributes like genotype can produce hypotheses to explain the patterns we see in the raw data.
@@ -245,7 +245,7 @@ The benefits of integrated and interactive visualization of genetic and experime
 High-throughput experimental measurements of mutational effects and immune escape in both seasonal influenza and SARS-CoV-2 have required custom tools for visualization and interpretation of these high-dimensional data \citep{Hilton2020,Aksamentov2021,Garrett2021,Greaney2022}.
 The data visualization presented here is amenable to showing similar multi-dimensional data, for instance linking different models to their scores across leaves in the phylogenetic tree in much the same way we have linked reference viruses to their titer measurements.
 The data structure for the measurements panel is purposefully agnostic to the pathogen or data generation approach.
-As research continues on the emergence of human pathogens from natural reservoirs in other organisms \citep{Olival2017,Leendertz2016} and high-dimensional experimental measurements of these pathogens accumulate \citep{Soh2019,Starr2022}, this flexible data structure and the resulting interactive visualizations could impact decision making related to pandemic preparedness.
+As research continues on the emergence of human pathogens from natural reservoirs in other organisms \citep{Olival2017,Leendertz2016} and high-dimensional experimental measurements of these pathogens accumulate \citep{Soh2019,Starr2022}, this flexible data structure and the resulting interactive visualizations could impact decision-making related to pandemic preparedness.
 
 \section*{Conflict of Interest Statement}
 %All financial, commercial or other relationships that might be perceived by the academic community as representing a potential conflict of interest must be disclosed. If no such relationship exists, authors will be asked to confirm the following statement:
@@ -295,13 +295,13 @@ Details about how to prepare and analyze the data in this study live on GitHub a
   \end{center}
   \caption{
     Previous approaches to static visualization of serological data for seasonal influenza vaccine composition reports.
-A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select a single vaccine candidate (e.g., A/Stockholm/6/2014) and see how well that strain might protect against other circulating viruses in their genetic context based on the antigenic distance encoded by color (orange and red color indicate greater distance and less protection by the selected strain).
+A) Phylogenetic visualization \citep{NeherBedford2018} allows the user to select a single vaccine candidate (e.g., A/Stockholm/6/2014) and see how well that virus might cover other circulating viruses in their genetic context based on the antigenic distance encoded by color (orange and red color indicate greater distance and less coverage by the selected virus).
 To compare multiple vaccine candidates, users have to select different reference viruses manually and toggle between them.
 B) Heatmap visualization of mean antigenic distances between multiple vaccine candidates (reference viruses on the y-axis) and viruses in currently circulating phylogenetic clades.
-Heatmaps encode distance by color and text, allowing the user to compare how well multiple vaccine candidates might protect against circulating viruses.
+Heatmaps encode distance by color and text, allowing the user to compare how well multiple vaccine candidates might cover circulating viruses.
 C) Interval plot of mean $\pm$ 89\% confidence interval values of antigenic distances between vaccine candidates (y-axis) and viruses in currently circulating clades.
-Unlike the heatmap visualization, the interval plot encodes distance with a spatial scale (the x-axis) instead of color and encodes clades with color instead of the spatial scale.
-The vertical gray lines represent the threshold above which strains are considered antigenically distinct (x=2, solid line) and where strains are antigenically identical (x=0, dashed line).
+Unlike the heatmap visualization, the interval plot encodes distance with a positional encoding (the x-axis) instead of color and encodes clades with color.
+The vertical gray lines represent the threshold above which viruses are considered antigenically distinct (x=2, solid line) and where viruses are antigenically identical (x=0, dashed line).
 This view allows users to compare multiple vaccine candidates, identify the candidate that covers specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying HI measurements.
 D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test viruses in each clade.
 This view allows users to perform the same tasks as the interval plot, but it also allows users to identify how many measurements support the summary statistics for a given vaccine candidate and identify multiple modes in the raw data distribution that could indicate within-clade antigenic variation.
@@ -324,9 +324,9 @@ g) Toggle to change measurements display between mean with standard deviation an
 h) Toggle to display or hide the overall mean and standard deviation for each group.
 i) Toggle to display or hide the threshold line.
 j) Grouping label for each group of measurements.
-This particular view uses reference viruses that are also present in the tree so the label includes the virus' corresponding color and color-by value.
+This particular view uses reference viruses that are also present in the tree so the label includes the virus's corresponding color and color-by value.
 k) The threshold line for titer measurements to indicate the threshold for antigenically distinct viruses.
-l) The hover panel that displays more details for the hovered measurement.
+l) The tooltip that displays more details for the hovered measurement.
 This particular view hovers over a mean and standard deviation.
 m) The x-axis of the measurements plot shows the range of measurements values in this collection.
   }\label{fig:2}
@@ -358,7 +358,7 @@ m) The x-axis of the measurements plot shows the range of measurements values in
     A) Summary phylogenetic tree with clade 144V highlighted in red.
     B) HI measurements when viewed as mean $\pm$ standard deviation show similar average values for two reference viruses and a wide range of antigenic diversity per reference.
     C) Viewing the individual measurements reveals a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference virus compared to an apparently unimodal distribution for the A/Beijing/353/1989 reference virus.
-    D) Coloring individual measurements by genotypes as the putative antigenic site HA1:135 shows a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring by clade alone.
+    D) Coloring individual measurements by genotypes at the putative antigenic site HA1:135 shows a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring by clade alone.
   }
   \label{fig:4}
 \end{figure}
