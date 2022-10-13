@@ -237,14 +237,15 @@ Effective visualizations facilitate both the synthesis and interpretation by pre
 Our interactive visualization tool presents serological data with a phylogenetic context, enabling decision makers to directly compare the antigenic distances between vaccine candidates and investigate patterns in the raw data.
 This tool regularly informs our discussions of influenza evolution with our collaborators in GISRS.
 
-The move beyond static presentations of analyses towards interactive applications such as this facilitates more widespread usage and analysis of said data. Specifically, the ability to link static view of the data, such as those found in VCM reports, with a URL that allows an interactive view into the data as presented in the figure is an important bridge between researchers. We hope that the adoption and continued development of biologically-informed visualization tools like this will facilitate a better understanding of pathogen evolution.
-
+The move beyond static presentations of analyses towards interactive applications such as this facilitates more widespread usage and analysis of biological data.
+Specifically, the ability to link static views of the data, such as those found in VCM reports, with URLs that allow an interactive view into the data as presented in the figure is an important bridge between researchers.
+We hope that the adoption and continued development of biologically-informed visualization tools like this will facilitate a better understanding of pathogen evolution.
 
 The benefits of integrated and interactive visualization of genetic and experimental data extend beyond serological measurements for seasonal influenza.
 High-throughput experimental measurements of mutational effects and immune escape in both seasonal influenza and SARS-CoV-2 have required custom tools for visualization and interpretation of these high-dimensional data \citep{Hilton2020,Aksamentov2021,Garrett2021,Greaney2022}.
-The data visualization presented here is amenable to showing similar multi-dimensional data, for instance linking different models to their scores across tips in the tree in much the same way we have linked reference sera to titer measurements. The JSON schema we employ here is purposefully agnostic to the pathogen or data generation approach. 
-We note that similar integrated visualizations have impacted decision making beyond public health responses to human pathogens, they also have great potential to improve our understanding of related pathogens in birds \citep{Soh2019} and bats \citep{Starr2022}.
-
+The data visualization presented here is amenable to showing similar multi-dimensional data, for instance linking different models to their scores across leaves in the phylogenetic tree in much the same way we have linked reference viruses to their titer measurements.
+The data structure for the measurements panel is purposefully agnostic to the pathogen or data generation approach.
+As research continues on the emergence of human pathogens from natural reservoirs in other organisms \citep{Olival2017,Leendertz2016} and high-dimensional experimental measurements of these pathogens accumulate \citep{Soh2019,Starr2022}, this flexible data structure and the resulting interactive visualizations could impact decision making related to pandemic preparedness.
 
 \section*{Conflict of Interest Statement}
 %All financial, commercial or other relationships that might be perceived by the academic community as representing a potential conflict of interest must be disclosed. If no such relationship exists, authors will be asked to confirm the following statement:
