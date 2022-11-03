@@ -72,8 +72,8 @@ Seasonal influenza A/H3N2 viruses primarily evolve by acquiring mutations that a
 This process, known as antigenic drift, changes the appearance of viral surface proteins hemagglutinin and neuraminidase.
 Hemagglutinin (HA) is the primary target of our adaptive immunity and the primary component of the seasonal influenza vaccine.
 Therefore, continued antigenic drift in HA necessitates regular updates to the seasonal influenza vaccine.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) collects HA genome sequences and performs serological experiments to track antigenic drift throughout the year \citep{Morris:2017ea}.
-HA genome sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor and share the same mutations that may contribute to antigenic drift.
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) collects HA gene sequences and performs serological experiments to track antigenic drift throughout the year \citep{Morris:2017ea}.
+HA gene sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor and share the same mutations that may contribute to antigenic drift.
 Serological experiments measure antigenic drift by quantifying how well viruses from different clades can escape detection by antibodies against vaccine candidates.
 
 The gold standard of these serological experiments is the hemagglutination inhibition (HI) assay \citep{hirst1943studies}.
@@ -143,7 +143,7 @@ Full documentation for sharing analyses through Nextstrain can be found at \url{
 
 \subsection{Data curation and analysis}
 
-We evaluated the new measurements panel by constructing a Nextstrain analysis \citep{Hadfield2018} with previously published HA genomes and HI titers \citep{Bedford:2014bf}.
+We evaluated the new measurements panel by constructing a Nextstrain analysis \citep{Hadfield2018} with previously published HA gene sequences and HI titers \citep{Bedford:2014bf}.
 A full data curation guide is available online at \url{https://github.com/blab/measurements-panel/tree/main/data#readme} and a full guide to running the bioinformatics analyses is available at \url{https://github.com/blab/measurements-panel#readme}.
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
@@ -216,7 +216,7 @@ We hypothesized that antigenic mutations could explain the two clusters of test 
 
 Nextstrain's Auspice tool provides multiple approaches to interrogate the mutations observed within a clade such as 144V.
 For example, the entropy panel quantifies the diversity of mutations present at each position in a given viral genome with higher values indicating more distinct amino acid mutations at a single position.
-We observed that position HA1:135 had the highest entropy among the 144V HA genomes.
+We observed that position HA1:135 had the highest entropy among the 144V HA gene sequences.
 This position was previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
 Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at this position.
 The genotype-specific coloring showed three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
