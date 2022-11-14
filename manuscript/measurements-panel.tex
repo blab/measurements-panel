@@ -131,26 +131,27 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 
 \subsection{Implementation}
 
-We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
+We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\href{https://github.com/nextstrain/auspice}{github.com/nextstrain/auspice}) under the AGPLv3 license.
 This implementation maintains the phylogenetic context and interactive data exploration provided by the \emph{nextflu} implementation.
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
-Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data locally in their own browser.
-Visualizations can be also shared with others through \url{https://nextstrain.org/}.
-Full documentation for sharing analyses through Nextstrain can be found at \url{https://docs.nextstrain.org/page/guides/share/}.
+Users can drag and drop dataset and measurements files onto \href{https://auspice.us/}{auspice.us/} to visualize the data locally in their own browser.
+Visualizations can be also shared with others through \href{https://nextstrain.org/}{nextstrain.org/}.
+Full documentation for sharing analyses through Nextstrain can be found at \href{https://docs.nextstrain.org/page/guides/share/}{docs.nextstrain.org/page/guides/share/}.
+
 
 \subsection{Data curation and analysis}
 
 We evaluated the new measurements panel by constructing a Nextstrain analysis \citep{Hadfield2018} with previously published HA gene sequences and HI titers \citep{Bedford:2014bf}.
-A full data curation guide is available online at \url{https://github.com/blab/measurements-panel/tree/main/data#readme} and a full guide to running the bioinformatics analyses is available at \url{https://github.com/blab/measurements-panel#readme}.
+A full data curation guide is available online at \href{https://github.com/blab/measurements-panel/tree/main/data#readme}{github.com/blab/measurements-panel/tree/main/data\#readme} and a full guide to running the bioinformatics analyses is available at \href{https://github.com/blab/measurements-panel#readme}{github.com/blab/measurements-panel\#readme}.
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
 We parsed metadata including viral strain name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
 We constructed an annotated phylogenetic tree and measurements panel with Augur commands as part of a workflow implemented with Snakemake \citep{Molder2021}.
 To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
-The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
+The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
 
@@ -268,12 +269,12 @@ TB is an Investigator of the Howard Hughes Medical Institute.
 
 This work started as a project for University of Washington (UW) class CSE 512 Data Visualization as a part of the UW eScience Advanced Data Science Option curriculum and we would like to thank Dr.\ Jeffrey Heer, Halden Lin, and Dr.\ Jane Hoffswell for their input on the initial design.
 We thank the members of GISRS for the high quality sequence and serological data used in this work.
-We have annotated sequence authors whenever that information was available at \url{https://github.com/blab/measurements-panel/blob/main/data/h3n2_ha_metadata.tsv}.
+We have annotated sequence authors whenever that information was available at \href{https://github.com/blab/measurements-panel/blob/main/data/h3n2_ha_metadata.tsv}{github.com/blab/measurements-panel/blob/main/data/h3n2\_ha\_metadata.tsv}.
 Without open data sharing, this work would not be possible.
 
 \section*{Data Availability Statement}
 
-Details about how to prepare and analyze the data in this study live on GitHub at \url{https://github.com/blab/measurements-panel/}.
+Details about how to prepare and analyze the data in this study live on GitHub at \href{https://github.com/blab/measurements-panel/}{github.com/blab/measurements-panel}.
 
 \bibliographystyle{Frontiers-Harvard}
 \bibliography{measurements-panel}
