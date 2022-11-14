@@ -132,7 +132,7 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 \subsection{Implementation}
 
 We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\href{https://github.com/nextstrain/auspice}{github.com/nextstrain/auspice}) under the AGPLv3 license.
-This implementation maintains the phylogenetic context and interactive data exploration provided by the \emph{nextflu} implementation.
+Nextstrain is a phylogenetic visualisation platform inspired by \emph{nextflu} and which maintains the interactive data exploration, with the measurement panel appearing alongside and in-sync with other views into the data (currently phylogenetic, geographic and genomic diversity views).
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
