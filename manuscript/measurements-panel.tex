@@ -149,7 +149,11 @@ A full data curation guide is available online at \href{https://github.com/blab/
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
 We parsed metadata including viral strain name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
-We constructed an annotated phylogenetic tree and measurements panel with Augur commands as part of a workflow implemented with Snakemake \citep{Molder2021}.
+We aligned HA sequences with mafft v7.508 \citep{Katoh2013}, inferred a phylogenetic tree with IQ-TREE 2.2.0.3 \citep{Minh2020}, and inferred a time tree with TreeTime 0.9.4 \citep{Sagulenko2018}.
+We annotated mutations on the phylogenetic tree and constructed the measurement panel data JSON with Augur 18.0.0 \citep{Huddleston2021}.
+For improved reproducibility, we automated the execution of these tasks in a Snakemake workflow \citep{Molder2021}.
+In the absence of official WHO clade designations for the time period of this analysis, we manually defined clades based on amino acid mutations at HA positions previously associated with antigenic drift \citep{Wolf:2006da} that also led to later successful lineages in the HA phylogenetic tree.
+We also selected these clades to represent enough genetic diversity of HA through time to highlight the measurement panel's functionality of grouping data by clade.
 To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
 The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
