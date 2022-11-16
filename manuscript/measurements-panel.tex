@@ -86,14 +86,9 @@ HI assays measure the minimum concentration or ``titer'' of antibodies required 
 Typically, antibodies come from previously uninfected ferrets who are then infected with a specific reference virus (e.g., a vaccine candidate).
 Each HI assay requires a series of two-fold dilutions of ferret antibodies to determine the minimum titer that inhibits binding.
 The higher the antibody titer required to prevent binding, the more antigenically drifted the test virus is from the reference virus.
-To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Smith:2004jc,Bedford:2014bf,Neher:2016hy}.
+To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Neher:2016hy}.
 The resulting values represent the magnitude of antigenic distance between a given reference virus and other test viruses.
 Traditionally, viruses with an antigenic distance greater than $2\log_{2}$ units are considered antigenically distinct \citep{Katz2011}.
-
-While phylogenetic analyses and visualisation have a long history (see \citet{felsenstein:2003} for a thorough overview of phylogenetic inference and \citet{lemey:2012} to introduce practical approaches currently used), understanding antigenic evolution in a phylogenetic context is less well established. To understand long-term patterns of antigenic drift, researchers have summarized these pairwise antigenic distances with statistical or visual representations.
-For example, antigenic cartography places high-dimensional antigenic distances in a two-dimensional space using multidimensional scaling \citep{Smith:2004jc,Bedford:2014bf}.
-These map-like visualizations reveal long-term trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
-However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
 
 The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
 At these meetings, WHO decision makers must select a single vaccine virus for H3N2 from the pool of available vaccine candidates.
@@ -103,7 +98,9 @@ The best vaccine candidate will have titer measurements against all current clad
 Such candidates are said to effectively ``cover'' currently circulating clades.
 Determining the vaccine candidate that most effectively covers recent clades requires a direct comparison of antigenic distances across all available vaccine candidates.
 
-We previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
+Historically, WHO decision makers have answered the key questions above using standard phylogenetic visualizations \citep{felsenstein:2003,lemey:2012} and separate visualizations of antigenic evolution \citep{Smith:2004jc}.
+Visualization of antigenic evolution in a phylogenetic context is a relatively recent development \citep{Steinbruck:2012ja,Bedford:2014bf,Neher:2016hy}.
+We previously developed two alternate visualizations of antigenic data to inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
 The first visualization is an interactive phylogenetic view implemented in the genomic epidemiology tool \emph{nextflu} \citep{NeherBedford2015,NeherBedford2018}.
 When the user selects a given reference virus from the phylogeny (by selecting a ``gear'' icon), the tool plots the pairwise antigenic distances between that reference and the corresponding test viruses in the tree using color to represent the distance values (Figure~\ref{fig:1}A).
 This representation reveals clades that the selected reference virus may or may not cover and which clades lack measurements against the reference.
