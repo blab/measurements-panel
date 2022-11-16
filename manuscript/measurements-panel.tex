@@ -21,7 +21,7 @@
 % Leave a blank line between paragraphs instead of using \\
 
 \def\keyFont{\fontsize{8}{11}\helveticabold }
-\def\firstAuthorLast{Lee {et~al.}} %use et al only if is more than 1 author
+\def\firstAuthorLast{Lee, Hadfield {et~al.}} %use et al only if is more than 1 author
 \def\Authors{Jover Lee\,$^{1,\dagger}$, James Hadfield\,$^{1,\dagger}$, Allison Black\,$^{2}$, Thomas R. Sibley\,$^{1}$, Richard A. Neher\,$^{3,4}$, Trevor Bedford\,$^{1,5}$, and John Huddleston\,$^{1,*}$}
 % Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
 % If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
@@ -40,7 +40,7 @@
 \onecolumn
 \firstpage{1}
 
-\title[Joint visualization of flu data]{Joint visualization of seasonal influenza serology and phylogeny to inform vaccine strain selection}
+\title[Joint visualization of influenza serology and phylogeny]{Joint visualization of seasonal influenza serology and phylogeny to inform vaccine composition}
 
 \author[\firstAuthorLast ]{\Authors} %This field will be automatically populated
 \address{} %This field will be automatically populated
@@ -60,7 +60,7 @@ A successful vaccine should represent the genetic diversity of recently circulat
 Thus, linking the genetic composition of circulating viruses and the serological experimental results measuring antibody efficacy is crucial to the vaccine design decision.
 Historically, genetic and serological data have been presented separately in the form of static visualizations of phylogenetic trees and tabular serological results to identify vaccine candidates.
 To simplify this decision-making process, we have created an interactive tool for visualizing serological data that has been integrated into Nextstrain's real-time phylogenetic visualization framework, Auspice.
-We show how the combined interactive visualizations may be used by decision makers to explore the relationships between complex data sets for both prospective vaccine strain selection and retrospectively exploring the performance of vaccine strains.
+We show how the combined interactive visualizations may be used by decision makers to explore the relationships between complex data sets for both prospective vaccine virus selection and retrospectively exploring the performance of vaccine viruses.
 
 \tiny
  \keyFont{ \section{Keywords:} influenza, serology, phylogeny, interactive, visualization} %All article types: you may provide up to 8 keywords; at least 5 are mandatory.
@@ -72,9 +72,14 @@ Seasonal influenza A/H3N2 viruses primarily evolve by acquiring mutations that a
 This process, known as antigenic drift, changes the appearance of viral surface proteins hemagglutinin and neuraminidase.
 Hemagglutinin (HA) is the primary target of our adaptive immunity and the primary component of the seasonal influenza vaccine.
 Therefore, continued antigenic drift in HA necessitates regular updates to the seasonal influenza vaccine.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) collects HA genome sequences and performs serological experiments to track antigenic drift throughout the year \citep{Morris:2017ea}.
-HA genome sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor and share the same mutations that may contribute to antigenic drift.
-Serological experiments measure antigenic drift by quantifying how well viruses from different clades can escape detection by antibodies against vaccine candidates.
+
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) tracks antigenic drift throughout the year by sequencing the HA gene of circulating viruses, growing candidate vaccine viruses in cell lines and chicken eggs, and performing serological experiments \citep{Morris:2017ea}.
+HA gene sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor.
+When the common ancestor of a clade carries amino acid mutations in HA that have been previously associated with antigenic drift \citep{Wolf:2006da,Shih:2007bd,Koel:2013jz}, viruses in that clade may be able to escape our existing immunity.
+GISRS researchers select representative viruses from major clades to grow in the cell line and chicken egg environments used in vaccine production \citep{Katz2011}.
+Viruses that grow in these conditions become candidate vaccine viruses or vaccine candidates.
+Serological experiments measure antigenic drift by quantifying how well viruses from one clade can escape detection by antibodies against vaccine candidates from the same clade or other clades.
+These experimental measurements validate the effects of specific mutations on antigenic drift.
 
 The gold standard of these serological experiments is the hemagglutination inhibition (HI) assay \citep{hirst1943studies}.
 HI assays measure the minimum concentration or ``titer'' of antibodies required to prevent a given test virus from binding to red blood cells.
@@ -85,19 +90,17 @@ To enable comparison between measurements from different reference viruses, rese
 The resulting values represent the magnitude of antigenic distance between a given reference virus and other test viruses.
 Traditionally, viruses with an antigenic distance greater than $2\log_{2}$ units are considered antigenically distinct \citep{Katz2011}.
 
-To understand long-term patterns of antigenic drift, researchers have summarized these pairwise antigenic distances with statistical or visual representations.
-For example, antigenic cartography places high-dimensional antigenic distances in a two-dimensional space using multidimensional scaling \citep{Smith:2004jc,Bedford:2014bf}.
-These map-like visualizations reveal long-term trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
-However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
-
-To understand short-term patterns of antigenic drift that would require an update to the vaccine, WHO decision makers need to answer specific questions.
-These include a) which available vaccine candidates require additional titer measurements against currently circulating clades, b) which vaccine candidates have the lowest antigenic distance to each clade, and c) what is the antigenic diversity of recent clades.
-In practice, decision makers must choose the next vaccine candidate from a small pool of viable options.
-The best candidate will have titer measurements against all current clades and have the lowest antigenic distance across these clades.
+The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
+At these meetings, WHO decision makers must select a single vaccine virus for H3N2 from the pool of available vaccine candidates.
+This selection strongly depends on the patterns of antigenic drift present in HI titers for clades identified from HA gene sequences.
+Key questions that decision makers must answer in this process include a) which available vaccine candidates require additional titer measurements against currently circulating clades, b) which vaccine candidates have the lowest antigenic distance to each clade, and c) what is the antigenic diversity of recent clades?
+The best vaccine candidate will have titer measurements against all current clades and have the lowest antigenic distance across these clades.
 Such candidates are said to effectively ``cover'' currently circulating clades.
 Determining the vaccine candidate that most effectively covers recent clades requires a direct comparison of antigenic distances across all available vaccine candidates.
 
-We have previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
+Historically, WHO decision makers have answered the key questions above using standard phylogenetic visualizations from HA gene sequences \citep{felsenstein:2003,lemey:2012} and separate visualizations of antigenic evolution from HI assays \citep{Smith:2004jc}.
+Visualization of antigenic evolution in a phylogenetic context is a relatively recent development \citep{Steinbruck:2012ja,Bedford:2014bf,Neher:2016hy}.
+We previously developed two alternate visualizations of antigenic data to inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
 The first visualization is an interactive phylogenetic view implemented in the genomic epidemiology tool \emph{nextflu} \citep{NeherBedford2015,NeherBedford2018}.
 When the user selects a given reference virus from the phylogeny (by selecting a ``gear'' icon), the tool plots the pairwise antigenic distances between that reference and the corresponding test viruses in the tree using color to represent the distance values (Figure~\ref{fig:1}A).
 This representation reveals clades that the selected reference virus may or may not cover and which clades lack measurements against the reference.
@@ -110,11 +113,14 @@ These heatmaps allow decision makers to directly compare average antigenic dista
 However, these heatmaps suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a positional encoding.
 Additionally, this view shows a summary statistic instead of the underlying distributions of the data, concealing the number and variance of measurements for each reference virus.
 
+To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
+The result is a new component of Nextstrain's interactive phylogenetic visualization platform that we call the measurements panel.
+Below, we describe the measurements panel and provide two case studies that demonstrate the practical value of this tool for vaccine composition decisions with the interactive visualizations available at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
+
 \section{Methods}
 
 \subsection{Visual design}
 
-To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
 Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
 Our two previous visualizations either obscured or hid the underlying distributions of the raw data.
 Since visualization of these distributions can improve confidence during the decision-making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxiliary user goal.
@@ -131,26 +137,30 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 
 \subsection{Implementation}
 
-We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\url{https://github.com/nextstrain/auspice}) under the AGPLv3 license.
-This implementation maintains the phylogenetic context and interactive data exploration provided by the \emph{nextflu} implementation.
+We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\href{https://github.com/nextstrain/auspice}{github.com/nextstrain/auspice}) under the AGPLv3 license.
+Auspice is a phylogenetic visualization platform inspired by \emph{nextflu} and which maintains the interactive data exploration, with the measurement panel appearing alongside and in-sync with other views into the data (currently phylogenetic, geographic and genomic diversity views).
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
-Users can drag and drop dataset and measurements files onto \url{https://auspice.us/} to visualize the data locally in their own browser.
-Visualizations can be also shared with others through \url{https://nextstrain.org/}.
-Full documentation for sharing analyses through Nextstrain can be found at \url{https://docs.nextstrain.org/page/guides/share/}.
+Users can drag and drop dataset and measurements files onto \href{https://auspice.us/}{auspice.us/} to visualize the data locally in their own browser.
+Visualizations can be also shared with others through \href{https://nextstrain.org/}{nextstrain.org/}.
+Full documentation for sharing analyses through Nextstrain can be found at \href{https://docs.nextstrain.org/page/guides/share/}{docs.nextstrain.org/page/guides/share/}.
 
 \subsection{Data curation and analysis}
 
-We evaluated the new measurements panel by constructing a Nextstrain analysis \citep{Hadfield2018} with previously published HA genomes and HI titers \citep{Bedford:2014bf}.
-A full data curation guide is available online at \url{https://github.com/blab/measurements-panel/tree/main/data#readme} and a full guide to running the bioinformatics analyses is available at \url{https://github.com/blab/measurements-panel#readme}.
+We evaluated the new measurements panel by constructing a Nextstrain analysis \citep{Hadfield2018} with previously published HA gene sequences and HI titers \citep{Bedford:2014bf}.
+A full data curation guide is available online at \href{https://github.com/blab/measurements-panel/tree/main/data#readme}{github.com/blab/measurements-panel/tree/main/data\#readme} and a full guide to running the bioinformatics analyses is available at \href{https://github.com/blab/measurements-panel#readme}{github.com/blab/measurements-panel\#readme}.
 Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \cite{Bedford:2014bf}'s GitHub repository.
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
-We parsed metadata including viral strain name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
-We constructed an annotated phylogenetic tree and measurements panel with Augur commands as part of a workflow implemented with Snakemake \citep{Molder2021}.
+We parsed metadata including viral sample name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
+We aligned HA sequences with mafft v7.508 \citep{Katoh2013}, inferred a phylogenetic tree with IQ-TREE 2.2.0.3 \citep{Minh2020}, and inferred a time tree with TreeTime 0.9.4 \citep{Sagulenko2018}.
+We annotated mutations on the phylogenetic tree and constructed the measurement panel data JSON with Augur 18.0.0 \citep{Huddleston2021}.
+For improved reproducibility, we automated the execution of these tasks in a Snakemake workflow \citep{Molder2021}.
+In the absence of official WHO clade designations for the time period of this analysis, we manually defined clades based on amino acid mutations at HA positions previously associated with antigenic drift \citep{Wolf:2006da} that also led to later successful lineages in the HA phylogenetic tree.
+We also selected these clades to represent enough genetic diversity of HA through time to highlight the measurement panel's functionality of grouping data by clade.
 To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
-The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \url{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
+The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
 
@@ -162,6 +172,8 @@ When users filter the tree by date (Figure~\ref{fig:2}a), metadata attributes of
 Users can easily focus on a subset of phylogenetically relevant measurements and examine the measurements of test viruses in recently circulating clades.
 The measurements are colored by the same coloring attribute (Figure~\ref{fig:2}b) as the phylogenetic tree, adding the legend values (Figure~\ref{fig:2}c) as another dimension of nominal data to the titer measurements.
 This coloring is especially useful for viewing titer data by genotypes of test viruses, allowing users to inspect relationships between specific mutations in HA and antigenic drift quantified by titer measurements.
+The investigation of genotypes is further facilitated by the diversity panel in Auspice, which shows the diversity of alleles across the genome.
+Clicking on a bar in the diversity panel will change the coloring of the tree and measurements to the genotypes at that position (Figure~\ref{fig:2}n).
 
 The measurements JSON can include multiple collections of titers for a single phylogenetic tree and users can change the collection displayed with the collection dropdown (Figure~\ref{fig:2}e).
 Users can then review different sets of data for the same phylogenetic tree such as separate measurements of cell- and egg-passaged virus titers.
@@ -179,7 +191,7 @@ We discuss the application of these features in detail in two case studies in th
 
 \subsection{Case study 1: Retrospective vaccine selection in fall 2009}
 
-The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
+As noted above, the WHO convenes VCMs twice per year \citep{Morris:2017ea}.
 The northern hemisphere VCM occurs in February or March ahead of a winter season in October through April.
 The southern hemisphere VCM occurs in September or October ahead of a winter season in April through October.
 To demonstrate the utility of an interactive visualization of serological measurements for vaccine composition decisions, we performed a retrospective analysis of a H3N2 vaccine update made for the southern hemisphere in the fall of 2009.
@@ -188,18 +200,18 @@ We note that the actual selection process used a richer dataset which is not pub
 
 The VCM ahead of the 2010 southern hemisphere season occurred in September 2009.
 Three clades circulated at that time including 173Q and two of its subclades named 144K and 158N/189K (Figure~\ref{fig:3}A).
-The most recent H3N2 vaccine strain, A/Brisbane/10/2007, had been used for the two prior influenza seasons (2008 and 2009) and represented an older clade, 140I, that had since been replaced by 173Q \citep{WHO:archive}.
-Prior to the A/Brisbane/10/2007 vaccine, A/Wisconsin/67/2005 had been the vaccine strain in the 2007 southern hemisphere season.
+The most recent H3N2 vaccine virus, A/Brisbane/10/2007, had been used for the two prior influenza seasons (2008 and 2009) and represented an older clade, 140I, that had since been replaced by 173Q \citep{WHO:archive}.
+Prior to the A/Brisbane/10/2007 vaccine, A/Wisconsin/67/2005 had been the vaccine virus in the 2007 southern hemisphere season.
 While 173Q dominated the 2008-2009 season, 144K appeared to be dominant in September 2009.
 At the time of the VCM, titers for both A/Brisbane/10/2007 and A/Wisconsin/67/2005 against test viruses from 144K and 158N/189K exceeded the $2\log_{2}$ threshold (Figure~\ref{fig:3}B), indicating their inability to cover these recent clades.
 In contrast, a newer vaccine candidate from the 144K clade, A/Perth/16/2009, had mean titers less than $1\log_{2}$ against the same recent clades.
-These results strongly supported an update from the previous vaccine strain to a vaccine based on A/Perth/16/2009.
+These results strongly supported an update from the previous vaccine virus to a vaccine based on A/Perth/16/2009.
 The WHO announced this decision on September 25, 2009.
 
 Our retrospective analysis allows us to see how the evolution of H3N2 continued after the VCM decision.
 Data collected after the vaccine selection deadline show that clade 158N/189K dominated for the following H3N2 seasons in both hemispheres (Figure~\ref{fig:3}A).
 Although later HI measurements show that A/Perth/16/2009 did not cover viruses from 158N/189K as effectively as viruses from its own 144K clade (with mean $log_{2}$ values exceeding 1), the new vaccine was still a better antigenic match than the previous two vaccines (Figure~\ref{fig:3}C).
-A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine strain for the 2010-12 southern hemisphere seasons and the 2010-11 and 2011-12 northern hemisphere seasons \citep{WHO:recent}.
+A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine virus for the 2010-12 southern hemisphere seasons and the 2010-11 and 2011-12 northern hemisphere seasons \citep{WHO:recent}.
 
 \subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
 
@@ -214,9 +226,7 @@ A/Shanghai/11/1987 had a mean antigenic distance of 1.64 $\pm$ 2.53 units, while
 The distributions of raw HI measurements revealed a bimodal distribution for A/Shanghai/11/1987 data and a unimodal distribution for A/Beijing/353/1989 (Figure~\ref{fig:4}C).
 We hypothesized that antigenic mutations could explain the two clusters of test viruses in the A/Shanghai/11/1987 data.
 
-Nextstrain's Auspice tool provides multiple approaches to interrogate the mutations observed within a clade such as 144V.
-For example, the entropy panel quantifies the diversity of mutations present at each position in a given viral genome with higher values indicating more distinct amino acid mutations at a single position.
-We observed that position HA1:135 had the highest entropy among the 144V HA genomes.
+We observed that position HA1:135 had the highest diversity among the 144V HA gene sequences in the diversity panel, indicating more distinct amino acid mutations at this position.
 This position was previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
 Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at this position.
 The genotype-specific coloring showed three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
@@ -268,12 +278,13 @@ TB is an Investigator of the Howard Hughes Medical Institute.
 
 This work started as a project for University of Washington (UW) class CSE 512 Data Visualization as a part of the UW eScience Advanced Data Science Option curriculum and we would like to thank Dr.\ Jeffrey Heer, Halden Lin, and Dr.\ Jane Hoffswell for their input on the initial design.
 We thank the members of GISRS for the high quality sequence and serological data used in this work.
-We have annotated sequence authors whenever that information was available at \url{https://github.com/blab/measurements-panel/blob/main/data/h3n2_ha_metadata.tsv}.
+We have annotated sequence authors whenever that information was available at \href{https://github.com/blab/measurements-panel/blob/main/data/h3n2_ha_metadata.tsv}{github.com/blab/measurements-panel/blob/main/data/h3n2\_ha\_metadata.tsv}.
 Without open data sharing, this work would not be possible.
 
 \section*{Data Availability Statement}
 
-Details about how to prepare and analyze the data in this study live on GitHub at \url{https://github.com/blab/measurements-panel/}.
+Details about how to prepare and analyze the data in this study live on GitHub at \href{https://github.com/blab/measurements-panel/}{github.com/blab/measurements-panel} and the dataset therein may be visualized via \newline\href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
+Please note that the data presented here is a small subset of those used to inform vaccine selection due to data sharing restrictions; we support public sharing of data (where appropriate) as this enhances the usability and reach of tools such as this.
 
 \bibliographystyle{Frontiers-Harvard}
 \bibliography{measurements-panel}
@@ -313,7 +324,7 @@ This view allows users to perform the same tasks as the interval plot, but it al
     \includegraphics[width=\textwidth]{figures/figure-2-screen-shot}
   \end{center}
   \caption{
-    Screenshot of Auspice with the sidebar controls, the phylogenetic tree panel, and the measurements panel.
+    Screenshot of Auspice with the sidebar controls, the phylogenetic tree panel, the measurements panel, and the diversity panel.
 a) Date range slider to filter both tree and measurements by the test virus sample date.
 b) Color-by dropdown to change the attribute to use for coloring the tree and measurements.
 c) Legend for colors and their corresponding values linked to viruses in the tree and measurements.
@@ -329,6 +340,7 @@ k) The threshold line for titer measurements to indicate the threshold for antig
 l) The tooltip that displays more details for the hovered measurement.
 This particular view hovers over a mean and standard deviation.
 m) The x-axis of the measurements plot shows the range of measurements values in this collection.
+n) Clicking on a bar in the diversity panel updates the tree and measurements to color by genotypes at that position.
   }\label{fig:2}
 \end{figure}
 
