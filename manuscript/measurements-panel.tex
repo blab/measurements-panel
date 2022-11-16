@@ -72,16 +72,21 @@ Seasonal influenza A/H3N2 viruses primarily evolve by acquiring mutations that a
 This process, known as antigenic drift, changes the appearance of viral surface proteins hemagglutinin and neuraminidase.
 Hemagglutinin (HA) is the primary target of our adaptive immunity and the primary component of the seasonal influenza vaccine.
 Therefore, continued antigenic drift in HA necessitates regular updates to the seasonal influenza vaccine.
-The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) collects HA gene sequences and performs serological experiments to track antigenic drift throughout the year \citep{Morris:2017ea}.
-HA gene sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor that carried mutations that may have contributed to antigenic drift.
-Serological experiments measure antigenic drift by quantifying how well viruses from different clades can escape detection by antibodies against vaccine candidates.
+
+The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) tracks antigenic drift throughout the year by sequencing the HA gene of circulating viruses, growing candidate vaccine viruses in cell lines and chicken eggs, and performing serological experiments \citep{Morris:2017ea}.
+HA gene sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor.
+When the common ancestor of a clade carries amino acid mutations in HA that have been previously associated with antigenic drift \citep{Wolf:2006da,Shih:2007bd,Koel:2013jz}, viruses in that clade may be able to escape our existing immunity.
+GISRS researchers select representative viruses from major clades to grow in the cell line and chicken egg environments used in vaccine production \citep{Katz2011}.
+Viruses that grow in these conditions become candidate vaccine viruses or vaccine candidates.
+Serological experiments measure antigenic drift by quantifying how well viruses from one clade can escape detection by antibodies against vaccine candidates from the same clade or other clades.
+These experimental measurements validate the effects of specific mutations on antigenic drift.
 
 The gold standard of these serological experiments is the hemagglutination inhibition (HI) assay \citep{hirst1943studies}.
 HI assays measure the minimum concentration or ``titer'' of antibodies required to prevent a given test virus from binding to red blood cells.
 Typically, antibodies come from previously uninfected ferrets who are then infected with a specific reference virus (e.g., a vaccine candidate).
 Each HI assay requires a series of two-fold dilutions of ferret antibodies to determine the minimum titer that inhibits binding.
 The higher the antibody titer required to prevent binding, the more antigenically drifted the test virus is from the reference virus.
-To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Neher:2016hy}.
+To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Smith:2004jc,Bedford:2014bf,Neher:2016hy}.
 The resulting values represent the magnitude of antigenic distance between a given reference virus and other test viruses.
 Traditionally, viruses with an antigenic distance greater than $2\log_{2}$ units are considered antigenically distinct \citep{Katz2011}.
 
@@ -90,14 +95,15 @@ For example, antigenic cartography places high-dimensional antigenic distances i
 These map-like visualizations reveal long-term trends in antigenic drift within seasonal influenza lineages like the punctuated emergence of new antigenic clusters every few years.
 However, antigenic cartography is less suited to representations of short-term antigenic drift on the same time scale as annual vaccine updates in each hemisphere.
 
-To understand short-term patterns of antigenic drift that would require an update to the vaccine, WHO decision makers need to answer specific questions.
-These include a) which available vaccine candidates require additional titer measurements against currently circulating clades, b) which vaccine candidates have the lowest antigenic distance to each clade, and c) what is the antigenic diversity of recent clades.
-In practice, decision makers must choose the next vaccine candidate from a small pool of viable options.
-The best candidate will have titer measurements against all current clades and have the lowest antigenic distance across these clades.
+The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
+At these meetings, WHO decision makers must select a single vaccine virus for H3N2 from the pool of available vaccine candidates.
+This selection strongly depends on the patterns of antigenic drift present in HI titers for clades identified from HA gene sequences.
+Key questions that decision makers must answer in this process include a) which available vaccine candidates require additional titer measurements against currently circulating clades, b) which vaccine candidates have the lowest antigenic distance to each clade, and c) what is the antigenic diversity of recent clades?
+The best vaccine candidate will have titer measurements against all current clades and have the lowest antigenic distance across these clades.
 Such candidates are said to effectively ``cover'' currently circulating clades.
 Determining the vaccine candidate that most effectively covers recent clades requires a direct comparison of antigenic distances across all available vaccine candidates.
 
-We have previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
+We previously developed two alternate visualizations of antigenic data to answer these questions and inform vaccine selection through reports to the WHO \citep{BedfordWHO2018,BedfordWHO2019}.
 The first visualization is an interactive phylogenetic view implemented in the genomic epidemiology tool \emph{nextflu} \citep{NeherBedford2015,NeherBedford2018}.
 When the user selects a given reference virus from the phylogeny (by selecting a ``gear'' icon), the tool plots the pairwise antigenic distances between that reference and the corresponding test viruses in the tree using color to represent the distance values (Figure~\ref{fig:1}A).
 This representation reveals clades that the selected reference virus may or may not cover and which clades lack measurements against the reference.
@@ -110,11 +116,13 @@ These heatmaps allow decision makers to directly compare average antigenic dista
 However, these heatmaps suffer reduced expressiveness by encoding the most valuable quantitative data with color instead of a positional encoding.
 Additionally, this view shows a summary statistic instead of the underlying distributions of the data, concealing the number and variance of measurements for each reference virus.
 
+To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
+Below, we describe the resulting measurements panel, a new component of Nextstrain's interactive phylogenetic visualization platform, and provide two case studies that demonstrate the practical value of the measurements panel for vaccine composition decisions.
+
 \section{Methods}
 
 \subsection{Visual design}
 
-To overcome the limitations of existing antigenic visualizations, we applied user-driven design based on the goals of decision makers described above and used standard visual design principles to produce a more expressive and effective visualization for influenza virologists.
 Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
 Our two previous visualizations either obscured or hid the underlying distributions of the raw data.
 Since visualization of these distributions can improve confidence during the decision-making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxiliary user goal.
@@ -185,7 +193,7 @@ We discuss the application of these features in detail in two case studies in th
 
 \subsection{Case study 1: Retrospective vaccine selection in fall 2009}
 
-The WHO convenes influenza vaccine composition meetings (VCMs) twice per year with each meeting occurring approximately 9 months prior to the next influenza season in a given hemisphere \citep{Morris:2017ea}.
+As noted above, the WHO convenes VCMs twice per year \citep{Morris:2017ea}.
 The northern hemisphere VCM occurs in February or March ahead of a winter season in October through April.
 The southern hemisphere VCM occurs in September or October ahead of a winter season in April through October.
 To demonstrate the utility of an interactive visualization of serological measurements for vaccine composition decisions, we performed a retrospective analysis of a H3N2 vaccine update made for the southern hemisphere in the fall of 2009.
