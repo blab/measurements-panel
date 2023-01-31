@@ -172,23 +172,24 @@ rule translate:
 rule clades:
     input:
         tree="results/{lineage}/tree.nwk",
-        nt_muts="results/{lineage}/nt_muts.json",
-        aa_muts="results/{lineage}/aa_muts.json",
-        clades="config/clades_{lineage}_ha.tsv",
+        mutations="results/{lineage}/aa_muts.json",
+        frequencies="auspice/measurements-panel_flu_seasonal_{lineage}_ha_tip-frequencies.json",
     output:
-        clades="results/{lineage}/clades.json"
-    benchmark:
-        "benchmarks/{lineage}/clades.txt"
+        clades="results/{lineage}/clades.json",
+    params:
+        **config["clades"]
     conda:
         "envs/nextstrain.yaml"
     log:
         "logs/{lineage}/clades.txt"
     shell:
         """
-        augur clades \
+        python3 scripts/assign_clades.py \
             --tree {input.tree} \
-            --mutations {input.nt_muts} {input.aa_muts} \
-            --clades {input.clades} \
+            --mutations {input.mutations} \
+            --frequencies {input.frequencies} \
+            --sites {params.sites} \
+            --minimum-frequency {params.minimum_frequency} \
             --output {output.clades} &> {log}
         """
 
@@ -324,6 +325,7 @@ rule tip_frequencies:
             --pivot-interval {params.pivot_interval} \
             --min-date {params.min_date} \
             --max-date {params.max_date} \
+            --include-internal-nodes \
             --output {output}
         """
 
