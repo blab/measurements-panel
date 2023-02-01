@@ -391,7 +391,7 @@ rule export_measurements:
         grouping_column=["reference_strain", "clade_reference", "source", "serum"],
         key=lambda wildcards: f"{wildcards.lineage}_ha_cell_hi",
         title=lambda wildcards: f"{lineage_name_by_abbreviation[wildcards.lineage]} cell-passaged HI measurements",
-        x_axis_label="normalized log2 titer",
+        x_axis_label="normalized log2 titer distance from reference",
         threshold=2.0,
         filters=["reference_strain", "clade_reference", "source", "serum"],
     shell:
