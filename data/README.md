@@ -75,14 +75,19 @@ augur parse \
   --fix-dates monthfirst
 ```
 
-Augur cannot properly parse all of the dates, so we need to transform the unparsed dates to "XXXX-XX-XX" strings.
+Augur cannot properly parse all of the dates.
+Specifically, A/HongKong/1/1968 has a malformed date in its IRD record (`NON--`) and A/Bilthoven/2668/1970 is missing a date in its GISAID record (``), so we need to replace these date strings with the appropriate ambiguous dates for each strain.
 
 ``` bash
 csvtk -t replace \
   -f date \
-  -p "(NON--|^$)" \
-  -r "XXXX-XX-XX" \
-  parsed_h3n2_ha_metadata.tsv > parsed_h3n2_ha_metadata_with_corrected_dates.tsv
+  -p "(NON--)" \
+  -r "1968-XX-XX" \
+  parsed_h3n2_ha_metadata.tsv | \
+    csvtk -t replace \
+      -f date \
+      -p "(^$)" \
+      -r "1970-XX-XX" > parsed_h3n2_ha_metadata_with_corrected_dates.tsv
 ```
 
 Sequence names from Bedford et al. 2014 do not always match names from these databases, so we need to rename the sequences to match the Bedford et al. names.
