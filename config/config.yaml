@@ -10,12 +10,6 @@ genes:
   - HA2
 
 # Define parameters for specific steps of the workflow by name.
-filter:
-  # Allow earlier strains that were included as references in the initial
-  # subsampling.
-  min_date: 2005-01-01
-  max_date: 2010-01-01
-
 refine:
   coalescent: const
   date_inference: marginal
