@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
             # Check whether this clade has mutations at the requested sites and
             # ever circulated above a minimum frequency threshold.
-            if len(clade_mutations) > 0 and max(frequencies_by_node[node.name]["frequencies"]) >= args.minimum_frequency:
+            if not node.is_terminal() and len(clade_mutations) > 0 and max(frequencies_by_node[node.name]["frequencies"]) >= args.minimum_frequency:
                 # Store the "clade annotation" to represent the first node in
                 # the tree with this clade name. Store "clade membership" for
                 # all nodes that descend from that clade including this first
