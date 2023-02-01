@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 from augur.utils import annotate_parents_for_tree, read_node_data, read_tree, write_json
+from collections import Counter
 import json
 
 
@@ -28,6 +29,7 @@ if __name__ == '__main__':
 
     # Traverse tree in preorder to find nodes with mutations at the requested
     # sites above a minimum frequency.
+    clade_name_count = Counter()
     for node in tree.find_clades(order="preorder"):
         # Assign a default clade membership to handle early nodes that do not
         # have mutations at requested sites.
@@ -51,6 +53,12 @@ if __name__ == '__main__':
                 # all nodes that descend from that clade including this first
                 # one.
                 clade_name = "/".join([f"{site}{mutation}" for site, mutation in clade_mutations.items()])
+                clade_name_count[clade_name] += 1
+
+                # Disambiguate clade names that we've seen before.
+                if clade_name_count[clade_name] > 1:
+                    clade_name = f"{clade_name}.{clade_name_count[clade_name]}"
+
                 node.clade_annotation = clade_name
                 node.clade_membership = clade_name
             else:
