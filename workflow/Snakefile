@@ -392,7 +392,7 @@ rule export_measurements:
         key=lambda wildcards: f"{wildcards.lineage}_ha_cell_hi",
         title=lambda wildcards: f"{lineage_name_by_abbreviation[wildcards.lineage]} cell-passaged HI measurements",
         x_axis_label="normalized log2 titer distance from reference",
-        threshold=2.0,
+        thresholds=[0.0, 2.0],
         filters=["reference_strain", "clade_reference", "source", "serum"],
     shell:
         """
@@ -404,7 +404,7 @@ rule export_measurements:
             --key {params.key} \
             --title {params.title:q} \
             --x-axis-label {params.x_axis_label:q} \
-            --threshold {params.threshold} \
+            --threshold {params.thresholds} \
             --filters {params.filters} \
             --show-threshold \
             --hide-overall-mean \
