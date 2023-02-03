@@ -160,9 +160,11 @@ For improved reproducibility, we automated the execution of these tasks in a Sna
 
 In the absence of official WHO clade designations for the time period of this analysis, we algorithmically assigned realistic clade labels to each internal node of the HA phylogeny that a) carried a mutation at one or more of seven previously identified sites associated with antigenic drift \citep{Koel:2013jz} and b) circulated at or above 10\% global frequency at some point during its existence.
 This algorithm mimics the decision-making approach used to assign clade labels in the last decade based on genetic data and prior knowledge about potentially relevant antigenic sites.
-Antigenic data are not routinely used to assign clade labels.
 
-To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
+To construct the measurements panel JSON, we first normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}.
+Normalization $\log_{2}$-transforms raw titer measurements and subtracts the transformed measurement for test virus $a$ and reference serum $\beta$ raised against reference virus $b$ from the corresponding measurement for the reference virus $b$ and its serum $\beta$.
+This normalization produces an antigenic distance between test and reference viruses that we can compare across HI experiments.
+Next, we converted these distances to a tab-separated values (TSV) file with a custom Python script and ran the new \texttt{augur measurements export} command with this TSV file as input.
 The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
