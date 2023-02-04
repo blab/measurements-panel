@@ -185,6 +185,9 @@ Users can then review different sets of data for the same phylogenetic tree such
 Within each collection, users can compare measurements across different groupings by changing the grouping category with the ``group by'' dropdown (Figure~\ref{fig:2}f).
 For vaccine selection, grouping by the reference virus (Figure~\ref{fig:2}j) allows decision makers to directly compare titers across multiple vaccine candidates.
 Other groupings such as data source or ferret serum can be used to explore the variability of the titer measurements.
+By default, groupings appear in descending order by number of measurements.
+Users can manually assign an order for specific groupings by filtering measurements to the corresponding grouping labels (Figure~\ref{fig:2}d).
+Groupings will appear on the y-axis in the order that the user selects them from the filter field.
 The overall mean for each grouping can then be toggled (Figure~\ref{fig:2}h) for whole group comparisons.
 
 The data display can be switched between mean with standard deviation and raw individual measurements (Figure~\ref{fig:2}g).
@@ -339,7 +342,7 @@ f) Measurements group by dropdown to change the grouping of measurements data.
 g) Toggle to change measurements display between mean with standard deviation and individual raw measurements.
 h) Toggle to display or hide the overall mean and standard deviation for each group.
 i) Toggle to display or hide the threshold lines.
-j) Grouping label for each group of measurements.
+j) Grouping label for each group of measurements. Labels appear in descending order by the number of measurements in that group (default) or in the order they have been selected by a user filter.
 This particular view uses reference viruses that are also present in the tree so the label includes the virus's corresponding color and color-by value.
 k) The threshold lines for titer measurements to indicate two thresholds: antigenically identical viruses at x=0 and antigenically distinct viruses at x=2.
 l) The tooltip that displays more details for the hovered measurement.
