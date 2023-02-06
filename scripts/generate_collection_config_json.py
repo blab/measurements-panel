@@ -37,11 +37,19 @@ if __name__ == '__main__':
     # Extract sorted values for each grouping column.
     groupings_config = []
     for grouping in args.groupings:
-        sorted_grouping_values = sorted_df[grouping].drop_duplicates().tolist()
-        groupings_config.append({
-            "key": grouping,
-            "order": sorted_grouping_values,
-        })
+        # Skip sorting of "source" values by clade, since it doesn't make sense.
+        # Omitting the "order" key from its config also demonstrates how the
+        # default ordering by record count works.
+        if grouping == "source":
+            groupings_config.append({
+                "key": grouping,
+            })
+        else:
+            sorted_grouping_values = sorted_df[grouping].drop_duplicates().tolist()
+            groupings_config.append({
+                "key": grouping,
+                "order": sorted_grouping_values,
+            })
 
     # Build the configuration JSON entry for the requested grouping.
     config = {
