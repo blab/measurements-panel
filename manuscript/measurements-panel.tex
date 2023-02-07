@@ -156,7 +156,7 @@ Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
 We parsed metadata including viral sample name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
 We aligned HA sequences with mafft v7.508 \citep{Katoh2013}, inferred a phylogenetic tree with IQ-TREE 2.2.0.3 \citep{Minh2020}, and inferred a time tree with TreeTime 0.9.4 \citep{Sagulenko2018}.
-We annotated mutations on the phylogenetic tree and constructed the measurements panel data JSON with Augur 18.0.0 \citep{Huddleston2021}.
+We annotated mutations on the phylogenetic tree and constructed the measurements panel data JSON with Augur 21.0.0 \citep{Huddleston2021}.
 For improved reproducibility, we automated the execution of these tasks in a Snakemake workflow \citep{Molder2021}.
 
 In the absence of official WHO clade designations for the time period of this analysis, we algorithmically assigned realistic clade labels to each internal node of the HA phylogeny that a) carried a mutation at one or more of seven previously identified sites associated with antigenic drift \citep{Koel:2013jz} and b) circulated at or above 10\% global frequency at some point during its existence.
