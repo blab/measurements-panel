@@ -21,7 +21,7 @@ if __name__ == '__main__':
     tree = annotate_parents_for_tree(tree)
 
     # Load mutations.
-    mutations_by_node = read_node_data(args.mutations, skip_validation=True)["nodes"]
+    mutations_by_node = read_node_data(args.mutations)["nodes"]
 
     # Load frequencies.
     with open(args.frequencies, "r", encoding="utf-8") as fh:
