@@ -75,17 +75,17 @@ Therefore, continued antigenic drift in HA necessitates regular updates to the s
 
 The World Health Organization (WHO) Global Influenza Surveillance and Response System (GISRS) tracks antigenic drift throughout the year by sequencing the HA gene of circulating viruses, growing candidate vaccine viruses in cell lines and chicken eggs, and performing serological experiments \citep{Morris:2017ea}.
 HA gene sequences reveal ``clades'' or groups of recent influenza viruses that descend from a common ancestor.
-When the common ancestor of a clade carries amino acid mutations in HA that have been previously associated with antigenic drift \citep{Wolf:2006da,Shih:2007bd,Koel:2013jz}, viruses in that clade may be able to escape our existing immunity.
+When the common ancestor of a clade carries amino acid mutations at positions in HA that have been previously targeted by antibodies following infection or vaccination \citep{Wolf:2006da,Shih:2007bd,Koel:2013jz}, viruses in that clade may be able to escape our existing immunity.
 GISRS researchers select representative viruses from major clades to grow in the cell line and chicken egg environments used in vaccine production \citep{Katz2011}.
 Viruses that grow in these conditions become candidate vaccine viruses or vaccine candidates.
 Serological experiments measure antigenic drift by quantifying how well viruses from one clade can escape detection by antibodies against vaccine candidates from the same clade or other clades.
 These experimental measurements validate the effects of specific mutations on antigenic drift.
 
 The gold standard of these serological experiments is the hemagglutination inhibition (HI) assay \citep{hirst1943studies}.
-HI assays measure the minimum concentration or ``titer'' of antibodies required to prevent a given test virus from binding to red blood cells.
+HI assays measure the minimum concentration or ``titer'' of antibodies required to prevent a given test virus from binding to and, thereby, agglutinating red blood cells.
 Typically, antibodies come from previously uninfected ferrets who are then infected with a specific reference virus (e.g., a vaccine candidate).
-Each HI assay requires a series of two-fold dilutions of ferret antibodies to determine the minimum titer that inhibits binding.
-The higher the antibody titer required to prevent binding, the more antigenically drifted the test virus is from the reference virus.
+Each HI assay requires a series of two-fold dilutions of ferret antibodies to determine the minimum titer that inhibits agglutination.
+The higher the antibody titer required to prevent agglutination, the more antigenically drifted the test virus is from the reference virus.
 To enable comparison between measurements from different reference viruses, researchers normalize titers by the titer required to inhibit the reference virus itself and convert values to a $\log_{2}$ scale \citep{Neher:2016hy}.
 The resulting values represent the magnitude of antigenic distance between a given reference virus and other test viruses.
 Traditionally, viruses with an antigenic distance greater than $2\log_{2}$ units are considered antigenically distinct \citep{Katz2011}.
@@ -121,8 +121,9 @@ Below, we describe the measurements panel and provide two case studies that demo
 
 \subsection{Visual design}
 
-Of the two previous visualizations we developed, the static heatmaps addressed the most user goals except for communicating which extant clades were missing measurements.
-Our two previous visualizations either obscured or hid the underlying distributions of the raw data.
+Between the interactive phylogenetic view in \emph{nextflu} (Figure~\ref{fig:1}A) and the static heatmap visualization used in WHO reports (Figure~\ref{fig:1}B), the heatmaps addressed the most user goals.
+The only original goal that heatmaps could not address was the communication of the number of measurements available for each clade that support the summary statistic of mean titer distance.
+Additionally, both of these prior visualizations either obscured or hid the underlying distributions of the raw data.
 Since visualization of these distributions can improve confidence during the decision-making process \citep{correll2014error,Hullman2015,Fernandes2018}, we treated the need to view these distributions as an auxiliary user goal.
 
 In the context of visual design principles, both the phylogenetic and heatmap views encode the most relevant quantitative data of antigenic distance with color.
@@ -137,8 +138,8 @@ We retained the encoding of nominal reference virus names on the y-axis, since m
 
 \subsection{Implementation}
 
-We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice, which is freely available on GitHub (\href{https://github.com/nextstrain/auspice}{github.com/nextstrain/auspice}) under the AGPLv3 license.
-Auspice is a phylogenetic visualization platform inspired by \emph{nextflu} and which maintains the interactive data exploration, with the measurement panel appearing alongside and in-sync with other views into the data (currently phylogenetic, geographic and genomic diversity views).
+We implemented this design as a new interactive measurements panel within Nextstrain's visualization tool, Auspice (version 2.43.0), which is freely available on GitHub (\href{https://github.com/nextstrain/auspice}{github.com/nextstrain/auspice}) under the AGPLv3 license.
+Auspice is a phylogenetic visualization platform inspired by \emph{nextflu} and which maintains the interactive data exploration, with the measurements panel appearing alongside and in-sync with other views into the data (currently phylogenetic, geographic and genomic diversity views).
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
@@ -155,11 +156,19 @@ Briefly, we downloaded HI titer data and accessions for H3N2 HA sequences from \
 We downloaded and combined HA sequences from the Influenza Virus Resource or GISAID, depending on the original source.
 We parsed metadata including viral sample name, database accession, collection date, and sequence authors from the sequence headers with \texttt{augur parse}.
 We aligned HA sequences with mafft v7.508 \citep{Katoh2013}, inferred a phylogenetic tree with IQ-TREE 2.2.0.3 \citep{Minh2020}, and inferred a time tree with TreeTime 0.9.4 \citep{Sagulenko2018}.
-We annotated mutations on the phylogenetic tree and constructed the measurement panel data JSON with Augur 18.0.0 \citep{Huddleston2021}.
+We annotated mutations on the phylogenetic tree and constructed the measurements panel data JSON with Augur 21.0.0 \citep{Huddleston2021}.
 For improved reproducibility, we automated the execution of these tasks in a Snakemake workflow \citep{Molder2021}.
-In the absence of official WHO clade designations for the time period of this analysis, we manually defined clades based on amino acid mutations at HA positions previously associated with antigenic drift \citep{Wolf:2006da} that also led to later successful lineages in the HA phylogenetic tree.
-We also selected these clades to represent enough genetic diversity of HA through time to highlight the measurement panel's functionality of grouping data by clade.
-To construct the measurements panel JSON, we normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}, converted these measurements to a tab-separated values (TSV) file with a custom Python script, and ran the new \texttt{augur measurements export} command with this TSV file as input.
+
+In the absence of official WHO clade designations for the time period of this analysis, we algorithmically assigned realistic clade labels to each internal node of the HA phylogeny that a) carried a mutation at one or more of seven previously identified sites associated with antigenic drift \citep{Koel:2013jz} and b) circulated at or above 10\% global frequency at some point during its existence.
+This algorithm mimics the decision-making approach used to assign clade labels in the last decade based on genetic data and prior knowledge about potentially relevant antigenic sites.
+
+To construct the measurements panel JSON, we first normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}.
+Normalization $\log_{2}$-transforms raw titer measurements and subtracts the transformed measurement for test virus $a$ and reference serum $\beta$ raised against reference virus $b$ from the corresponding measurement for the reference virus $b$ and its serum $\beta$.
+This normalization produces an antigenic distance between test and reference viruses that we can compare across HI experiments.
+Next, we converted these distances to a tab-separated values (TSV) file with a custom Python script and ran the new \texttt{augur measurements export} command with this TSV file as input.
+Using a collection configuration file passed to the \texttt{augur measurements export} command, we sorted grouping labels in the measurements JSON file for reference strain, reference clade, and serum by descending order of the earliest collection date of reference strains in each clade and then by descending order of reference strain collection date within the clade.
+This sorting causes reference strains and other grouping labels to appear in the measurements panel in roughly the same order each reference clade appears in the phylogeny.
+We sorted the grouping labels for each measurement's ``source'' by the default which is in descending order by the number of measurements in the grouping.
 The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
 \section{Results}
@@ -180,13 +189,17 @@ Users can then review different sets of data for the same phylogenetic tree such
 Within each collection, users can compare measurements across different groupings by changing the grouping category with the ``group by'' dropdown (Figure~\ref{fig:2}f).
 For vaccine selection, grouping by the reference virus (Figure~\ref{fig:2}j) allows decision makers to directly compare titers across multiple vaccine candidates.
 Other groupings such as data source or ferret serum can be used to explore the variability of the titer measurements.
+By default, groupings appear in descending order by the number of measurements in each group.
+Users can specify a custom order for grouping values with a configuration file passed to \texttt{augur measurements export}.
+Users can also manually assign an order for specific groupings in Auspice by filtering measurements to the corresponding grouping values (Figure~\ref{fig:2}d).
+Groupings will appear on the y-axis in the order that the user selects them from the filter field.
 The overall mean for each grouping can then be toggled (Figure~\ref{fig:2}h) for whole group comparisons.
 
 The data display can be switched between mean with standard deviation and raw individual measurements (Figure~\ref{fig:2}g).
 The means are calculated per color attribute to allow for comparisons across attributes within each group.
 This view maintains the ability to view the mean antigenic distance for test viruses within each clade that we had implemented in the static heatmaps.
 The raw measurements view plots each individual measurement to give users a detailed view of the quantity and distribution of titers, which can inform design decisions for future titer experiments.
-The titers threshold can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a binary view of when titer measurements are considered antigenically distinct (Figure~\ref{fig:2}k).
+The titers thresholds can be toggled (Figure~\ref{fig:2}i) to add a clear demarcation of the threshold value for a view of when titer measurements are considered antigenically identical and distinct (Figure~\ref{fig:2}k).
 We discuss the application of these features in detail in two case studies in the following sections.
 
 \subsection{Case study 1: Retrospective vaccine selection in fall 2009}
@@ -199,19 +212,20 @@ We used publicly available sequence and titer data \citep{Bedford:2014bf} to rec
 We note that the actual selection process used a richer dataset which is not publicly available to include here, and as such these data should be seen as representative of the process only.
 
 The VCM ahead of the 2010 southern hemisphere season occurred in September 2009.
-Three clades circulated at that time including 173Q and two of its subclades named 144K and 158N/189K (Figure~\ref{fig:3}A).
-The most recent H3N2 vaccine virus, A/Brisbane/10/2007, had been used for the two prior influenza seasons (2008 and 2009) and represented an older clade, 140I, that had since been replaced by 173Q \citep{WHO:archive}.
+One major clade circulated at that time, 158N/189K, that descended from the previously dominant clade 193F (Figure~\ref{fig:3}A).
+The most recent H3N2 vaccine virus, A/Brisbane/10/2007, had been used for the two prior influenza seasons (2008 and 2009) and represented the older 193F clade \citep{WHO:archive}.
 Prior to the A/Brisbane/10/2007 vaccine, A/Wisconsin/67/2005 had been the vaccine virus in the 2007 southern hemisphere season.
-While 173Q dominated the 2008-2009 season, 144K appeared to be dominant in September 2009.
-At the time of the VCM, titers for both A/Brisbane/10/2007 and A/Wisconsin/67/2005 against test viruses from 144K and 158N/189K exceeded the $2\log_{2}$ threshold (Figure~\ref{fig:3}B), indicating their inability to cover these recent clades.
-In contrast, a newer vaccine candidate from the 144K clade, A/Perth/16/2009, had mean titers less than $1\log_{2}$ against the same recent clades.
+While 193F dominated the 2008-2009 season, 158N/189K appeared to be dominant in September 2009.
+At the time of the VCM, titers for both A/Brisbane/10/2007 and A/Wisconsin/67/2005 against test viruses from 158N/189K exceeded the $2\log_{2}$ threshold (Figure~\ref{fig:3}B), indicating their inability to cover this recent clade.
+In contrast, a newer vaccine candidate from the 158N/189K clade, A/Perth/16/2009, had a titer distance of -0.01 $\pm$ 0.67 $\log_{2}$ units (mean $\pm$ standard deviation) against test viruses from the same clade.
 These results strongly supported an update from the previous vaccine virus to a vaccine based on A/Perth/16/2009.
 The WHO announced this decision on September 25, 2009.
 
 Our retrospective analysis allows us to see how the evolution of H3N2 continued after the VCM decision.
-Data collected after the vaccine selection deadline show that clade 158N/189K dominated for the following H3N2 seasons in both hemispheres (Figure~\ref{fig:3}A).
-Although later HI measurements show that A/Perth/16/2009 did not cover viruses from 158N/189K as effectively as viruses from its own 144K clade (with mean $log_{2}$ values exceeding 1), the new vaccine was still a better antigenic match than the previous two vaccines (Figure~\ref{fig:3}C).
-A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine virus for the 2010-12 southern hemisphere seasons and the 2010-11 and 2011-12 northern hemisphere seasons \citep{WHO:recent}.
+Data collected after the vaccine selection deadline show that clade 158N/189K dominated for the following H3N2 seasons in both hemispheres, but two smaller clades each with HA1:145S mutations emerged from within this larger clade (Figure~\ref{fig:3}A).
+Although later HI measurements show that A/Perth/16/2009 did not cover later viruses from 158N/189K as effectively as it had covered earlier viruses from that clade (1.01 $\pm$ 1.22 $\log_{2}$ units), the new vaccine was still a better antigenic match than the previous two vaccines (Figure~\ref{fig:3}C).
+A/Perth/16/2009 did not effectively cover most viruses from the larger of the two derived clades, 145S.2 (1.94 $\pm$ 0.71 $\log_{2}$ units), indicating that the putative antigenic mutation defining the new clade might be responsible for antigenic drift.
+Despite this antigenic drift in a derived clade, A/Perth/16/2009 remained the WHO's recommended H3N2 vaccine virus for the 2010-12 southern hemisphere seasons and the 2010-11 and 2011-12 northern hemisphere seasons \citep{WHO:recent}.
 
 \subsection{Case study 2: Identification of genotype-specific patterns through visualization of raw data}
 
@@ -220,25 +234,25 @@ The genetic similarity of viruses in the same clade typically corresponds with a
 However, new mutations may arise within a clade that cause test viruses with those mutations to differ antigenically from earlier viruses in the same clade.
 Here, we demonstrate how aggregation of antigenic distances by clade can obscure the emergence of antigenically novel test viruses and how visualization of raw measurements can reveal these important patterns.
 
-Using the same data from the previous case study, we noted that clade 144V circulated between 1984 and 1992 (Figure~\ref{fig:4}A) and that multiple HI measurements existed for reference and test viruses from this clade.
-We identified two reference viruses in 144V with similar average HI measurements and divergent raw distributions (Figure~\ref{fig:4}B).
-A/Shanghai/11/1987 had a mean antigenic distance of 1.64 $\pm$ 2.53 units, while A/Beijing/353/1989 had a mean distance of 1.13 $\pm$ 1.42 units.
-The distributions of raw HI measurements revealed a bimodal distribution for A/Shanghai/11/1987 data and a unimodal distribution for A/Beijing/353/1989 (Figure~\ref{fig:4}C).
-We hypothesized that antigenic mutations could explain the two clusters of test viruses in the A/Shanghai/11/1987 data.
-
-We observed that position HA1:135 had the highest diversity among the 144V HA gene sequences in the diversity panel, indicating more distinct amino acid mutations at this position.
-This position was previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
-Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at this position.
-The genotype-specific coloring showed three different alleles at position 135 including the ancestral 135G and two derived alleles of 135E and 135D (Figure~\ref{fig:4}D).
-This view also revealed that test viruses with same 135G genotype as A/Shanghai/11/1987 had lower antigenic distances (mean of -1.00 $\pm$ 1.34 units), while viruses with the derived 135E and 135D genotypes had higher antigenic distances (3.74 $\pm$ 0.69 and 2.73 $\pm$ 0.89, respectively).
-Measurements against A/Beijing/353/1989 showed the inverse pattern with lower distances from this reference to test viruses with 135E and 135D (0.46 $\pm$ 0.79 and 0.72 $\pm$ 0.71, respectively) and higher distances to 135G (3.05 $\pm$ 1.18).
+Using the same data from the previous case study, we inspected the patterns of HI measurements for the clade at the highest global frequency during the fall 2009 vaccine composition meeting, 158N/189K.
+We identified a reference virus from each of the two largest subclades of 158N/189K where both viruses had similar average HI measurements and distributions of raw measurements (Figure~\ref{fig:4}B).
+Serum against A/HongKong/1985/2009 had a mean antigenic distance of 0.56 $\pm$ 1.45 $\log_{2}$ units to test viruses from 158N/189K, while serum against A/Alaska/5/2010 had a mean distance of 0.48 $\pm$ 1.66 $\log_{2}$ units.
+The distributions of raw HI measurements revealed clusters of values around titer distances of 0 and slightly above 2 for both reference viruses (Figure~\ref{fig:4}C).
+We hypothesized that these clusters could be explained by the presence of antigenic mutations in each reference virus's subclade.
+The two largest subclades of 158N/189K were defined by mutations at HA1 positions 62, 144, and 212.
+Each of these positions were previously identified as a putative antigenic site in HA where mutations could enable escape from existing immunity \citep{Wolf:2006da}.
+Additionally, position 144 is immediately adjacent to HA1:145, a position previously identified to contribute to novel antigenic clusters \citep{Koel:2013jz}.
+Based on this genetic information, we colored the HI measurements by the genotypes of the test viruses at position 144.
+The genotype-specific coloring showed two different alleles at position 144 including the ancestral allele 144N and the derived allele 144K (Figure~\ref{fig:4}D).
+This view also revealed that test viruses with same 144K genotype as A/HongKong/1985/2009 had lower antigenic distances (mean of -0.56 $\pm$ 0.75 $\log_{2}$ units), while viruses with the ancestral 144N genotype had higher antigenic distances (1.58 $\pm$ 1.14 $\log_{2}$ units).
+Interestingly, measurements against A/Alaska/5/2010 showed similar distances for both test viruses with 144N (0.57 $\pm$ 1.72 $\log_{2}$ units) and those with 144K (0.13 $\pm$ 1.51 $\log_{2}$ units).
+We observed the same patterns when grouping measurements by genotypes at the other two subclade-defining positions of HA1:62 and 212.
 
 These results demonstrate how summary statistics can obscure biologically relevant patterns in the raw data.
 They also show how the ability to interactively color data by different viral attributes like genotype can produce hypotheses to explain the patterns we see in the raw data.
-Importantly, these results do not confirm that the differences we observe in antigenic distances were caused by mutations at HA1:135.
-The same test viruses with derived 135 mutations also have mutations at two positions adjacent to HA's receptor binding site, HA1:145 and 193, where mutations have been previously shown to cause antigenic drift \citep{Koel:2013jz}.
-Confirmation of mutational effects requires further experimental work.
-However, this interactive visualization tool enables decision makers to explore their data and generate new hypotheses in ways that previous tools did not.
+For example, the genotype-specific patterns for A/HongKong/1985/2009 indicate the need for additional experiments to verify the antigenic effect of mutations at positions HA1:62, 144, and 212.
+In contrast, the high, genotype-independent variance of measurements against A/Alaska/5/2010 suggest that this reference virus might not be a stable vaccine candidate.
+This interactive visualization tool enables decision makers to explore their data and generate new hypotheses in ways that previous tools did not.
 
 \section{Discussion}
 
@@ -312,7 +326,7 @@ B) Heatmap visualization of mean antigenic distances between multiple vaccine ca
 Heatmaps encode distance by color and text, allowing the user to compare how well multiple vaccine candidates might cover circulating viruses.
 C) Interval plot of mean $\pm$ 89\% confidence interval values of antigenic distances between vaccine candidates (y-axis) and viruses in currently circulating clades.
 Unlike the heatmap visualization, the interval plot encodes distance with a positional encoding (the x-axis) instead of color and encodes clades with color.
-The vertical gray lines represent the threshold above which viruses are considered antigenically distinct (x=2, solid line) and where viruses are antigenically identical (x=0, dashed line).
+The vertical gray lines represent the threshold above which viruses are considered antigenically distinct (line at x=2) and where viruses are antigenically identical (line at x=0).
 This view allows users to compare multiple vaccine candidates, identify the candidate that covers specific clades based on a mean value to the left of the threshold at x=2, and view the variance in the underlying HI measurements.
 D) Combined swarm and interval plot showing the raw pairwise measurements between each vaccine candidate and the test viruses in each clade.
 This view allows users to perform the same tasks as the interval plot, but it also allows users to identify how many measurements support the summary statistics for a given vaccine candidate and identify multiple modes in the raw data distribution that could indicate within-clade antigenic variation.
@@ -333,10 +347,11 @@ e) Measurements collection dropdown to change the collection of measurements dis
 f) Measurements group by dropdown to change the grouping of measurements data.
 g) Toggle to change measurements display between mean with standard deviation and individual raw measurements.
 h) Toggle to display or hide the overall mean and standard deviation for each group.
-i) Toggle to display or hide the threshold line.
+i) Toggle to display or hide the threshold lines.
 j) Grouping label for each group of measurements.
+Labels appear in descending order by the number of measurements in that group (default), by the custom order defined in a configuration file passed to \texttt{augur measurements export}, or in the order they have been selected by a user filter.
 This particular view uses reference viruses that are also present in the tree so the label includes the virus's corresponding color and color-by value.
-k) The threshold line for titer measurements to indicate the threshold for antigenically distinct viruses.
+k) The threshold lines for titer measurements to indicate two thresholds: antigenically identical viruses at x=0 and antigenically distinct viruses at x=2.
 l) The tooltip that displays more details for the hovered measurement.
 This particular view hovers over a mean and standard deviation.
 m) The x-axis of the measurements plot shows the range of measurements values in this collection.
@@ -351,12 +366,12 @@ n) Clicking on a bar in the diversity panel updates the tree and measurements to
   \caption{
     Serological analysis of H3N2 clades around the time of the southern hemisphere vaccine composition meeting (VCM) for the 2010 influenza season.
     A) Phylogenetic tree summarizing the clades circulating before and after the VCM in September 2009.
-    At the time of the VCM, clade 144K (light blue) was dominant, and A/Perth/16/2009 was the vaccine candidate from this clade.
-    A/Brisbane/10/2007 (clade 140I) had been the southern hemisphere vaccine in 2008 and 2009 and A/Wisconsin/67/2005 (clade 193F/225N) had been the vaccine in 2007.
-    B) HI titers against three vaccine candidates, using only data available prior to the final decision from the VCM (September 25, 2009).
+    At the time of the VCM, clade 158N/189K (yellowish green) was dominant, and A/Perth/16/2009 was the vaccine candidate from this clade.
+    A/Brisbane/10/2007 (clade 193F) had been the southern hemisphere vaccine in 2008 and 2009 and A/Wisconsin/67/2005 (clade 193F) had been the vaccine in 2007.
+    B) HI titers for three vaccine candidates against test viruses from the two largest recent clades, using only data available prior to the final decision from the VCM (September 25, 2009).
     HI titers greater than $2\log_{2}$ indicate the inability of previous vaccines to cover viruses from the most recent clades.
-    C) Same as (B) but including test viruses and HI measurements collected after the VCM, which were mainly from clade 158N/189K.
-    With mean HI titers less than $2\log_{2}$, A/Perth/16/2009 covered this successful clade better than the previous vaccines.
+    C) Same as (B) but including test viruses and HI measurements collected after the VCM for 158N/189K and the largest new clade with HA1:145S, 145S.2.
+    With mean HI titers less than $2\log_{2}$, A/Perth/16/2009 covered 158N/189K viruses better than the previous vaccines.
   }
   \label{fig:3}
 \end{figure}
@@ -366,11 +381,13 @@ n) Clicking on a bar in the diversity panel updates the tree and measurements to
     \includegraphics[width=\textwidth]{figures/figure-4}
   \end{center}
   \caption{
-    Antigenic distances from HI assays between clade 144V reference and test viruses, highlighting two reference viruses with similar mean distances and divergent raw distributions.
-    A) Summary phylogenetic tree with clade 144V highlighted in red.
+    Antigenic distances from HI assays between clade 158N/189K reference and test viruses, highlighting two reference viruses with similar mean distances and raw distributions.
+    A) Summary phylogenetic tree with clade 158N/189K shown in yellowish green.
     B) HI measurements when viewed as mean $\pm$ standard deviation show similar average values for two reference viruses and a wide range of antigenic diversity per reference.
-    C) Viewing the individual measurements reveals a previously hidden bimodal distribution in the measurements for the A/Shanghai/11/1987 reference virus compared to an apparently unimodal distribution for the A/Beijing/353/1989 reference virus.
-    D) Coloring individual measurements by genotypes at the putative antigenic site HA1:135 shows a potential genotype-specific explanation for the two clusters seen in the A/Shanghai/11/1987 measurements and a similar bimodal distribution in the measurements for A/Beijing/353/1989 that was not as clear when coloring by clade alone.
+    C) Viewing the individual measurements reveals a previously hidden bimodal distribution in the measurements for both reference viruses.
+    D) Coloring individual measurements by genotypes at the putative antigenic site HA1:144 shows a potential genotype-specific explanation for the two clusters seen in the A/HongKong/1985/2009 measurements.
+    In contrast, measurements for A/Alaska/5/2010 have a high variance that cannot be explained by the genotype of test viruses at HA1:144.
+    This genotype-specific coloring reveals patterns that were not clear when coloring by clade alone.
   }
   \label{fig:4}
 \end{figure}

@@ -172,23 +172,24 @@ rule translate:
 rule clades:
     input:
         tree="results/{lineage}/tree.nwk",
-        nt_muts="results/{lineage}/nt_muts.json",
-        aa_muts="results/{lineage}/aa_muts.json",
-        clades="config/clades_{lineage}_ha.tsv",
+        mutations="results/{lineage}/aa_muts.json",
+        frequencies="auspice/measurements-panel_flu_seasonal_{lineage}_ha_tip-frequencies.json",
     output:
-        clades="results/{lineage}/clades.json"
-    benchmark:
-        "benchmarks/{lineage}/clades.txt"
+        clades="results/{lineage}/clades.json",
+    params:
+        **config["clades"]
     conda:
         "envs/nextstrain.yaml"
     log:
         "logs/{lineage}/clades.txt"
     shell:
         """
-        augur clades \
+        python3 scripts/assign_clades.py \
             --tree {input.tree} \
-            --mutations {input.nt_muts} {input.aa_muts} \
-            --clades {input.clades} \
+            --mutations {input.mutations} \
+            --frequencies {input.frequencies} \
+            --sites {params.sites} \
+            --minimum-frequency {params.minimum_frequency} \
             --output {output.clades} &> {log}
         """
 
@@ -324,6 +325,7 @@ rule tip_frequencies:
             --pivot-interval {params.pivot_interval} \
             --min-date {params.min_date} \
             --max-date {params.max_date} \
+            --include-internal-nodes \
             --output {output}
         """
 
@@ -377,32 +379,50 @@ rule plot_antigenic_distances:
         "notebooks/static-titer-visualizations.py.ipynb"
 
 
+rule generate_collection_config_json:
+    input:
+        distances="results/{lineage}/antigenic_distances_between_strains.tsv",
+    output:
+        config_json="results/{lineage}/measurements_collection_config.json",
+    conda: "envs/nextstrain.yaml"
+    params:
+        groupings=["reference_strain", "clade_reference", "source", "serum"],
+    log:
+        "logs/generate_collection_config_json_{lineage}.txt"
+    shell:
+        """
+        python3 scripts/generate_collection_config_json.py \
+            --collection {input.distances} \
+            --groupings {params.groupings:q} \
+            --output {output.config_json} &> {log}
+        """
+
 rule export_measurements:
     input:
         distances="results/{lineage}/antigenic_distances_between_strains.tsv",
+        config_json="results/{lineage}/measurements_collection_config.json",
     output:
         measurements="auspice/measurements-panel_flu_seasonal_{lineage}_ha_measurements.json",
     conda: "envs/nextstrain.yaml"
     params:
         strain_column="test_strain",
         value_column="log2_titer",
-        grouping_column=["reference_strain", "clade_reference", "source", "serum"],
         key=lambda wildcards: f"{wildcards.lineage}_ha_cell_hi",
         title=lambda wildcards: f"{lineage_name_by_abbreviation[wildcards.lineage]} cell-passaged HI measurements",
-        x_axis_label="normalized log2 titer",
-        threshold=2.0,
+        x_axis_label="normalized log2 titer distance from reference",
+        thresholds=[0.0, 2.0],
         filters=["reference_strain", "clade_reference", "source", "serum"],
     shell:
         """
         augur measurements export \
             --collection {input.distances} \
+            --collection-config {input.config_json} \
             --strain-column {params.strain_column} \
             --value-column {params.value_column} \
-            --grouping-column {params.grouping_column} \
             --key {params.key} \
             --title {params.title:q} \
             --x-axis-label {params.x_axis_label:q} \
-            --threshold {params.threshold} \
+            --threshold {params.thresholds} \
             --filters {params.filters} \
             --show-threshold \
             --hide-overall-mean \

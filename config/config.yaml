@@ -10,12 +10,6 @@ genes:
   - HA2
 
 # Define parameters for specific steps of the workflow by name.
-filter:
-  # Allow earlier strains that were included as references in the initial
-  # subsampling.
-  min_date: 2005-01-01
-  max_date: 2010-01-01
-
 refine:
   coalescent: const
   date_inference: marginal
@@ -26,8 +20,12 @@ ancestral:
   inference: joint
 
 frequencies:
-  narrow_bandwidth: 0.1667
+  narrow_bandwidth: 0.25
   proportion_wide: 0.0
-  min_date: 2005-01-01
+  min_date: 1968-01-01
   max_date: 2012-01-01
-  pivot_interval: 1
+  pivot_interval: 3
+
+clades:
+  sites: 145 155 156 158 159 189 193
+  minimum_frequency: 0.1

@@ -17,3 +17,6 @@ results
 *.blg
 *.out
 *.pdf
+*.fdb_latexmk
+*.fls
+.auctex-auto/

@@ -4,6 +4,6 @@ channels:
 - bioconda
 - defaults
 dependencies:
-- augur=18.0.0
+- augur=21.0.0
 - csvtk=0.25.0
 - python>=3.9
