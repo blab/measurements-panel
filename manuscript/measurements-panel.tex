@@ -145,7 +145,7 @@ The phylogenetic tree is provided via a dataset JSON file produced by \texttt{au
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
 The measurements sidecar JSON is expected to have an array of collections, where each collection contains its display configurations for Auspice and an array of measurements.
 Each measurement must include a numeric \texttt{value} to plot along the x-axis and a \texttt{strain} name that exactly matches a sequence name in the phylogenetic tree to support interactivity between panels.
-The full JSON schema for the measurements sidecar JSON can be found at \href{https://github.com/nextstrain/augur/blob/master/augur/data/schema-measurements.json}{github.com/nextstrain/augur/blob/master/augur/data/schema-measurements.json}.
+For complete technical details about the data structure used by the measurements panel, see the \href{https://github.com/nextstrain/augur/blob/797af0d7fa3291574b76823ae22563f52b2ab33c/augur/data/schema-measurements.json}{measurements sidecar JSON schema document}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
 Users can drag and drop dataset and measurements files onto \href{https://auspice.us/}{auspice.us/} to visualize the data locally in their own browser.
 Visualizations can be also shared with others through \href{https://nextstrain.org/}{nextstrain.org/}.
