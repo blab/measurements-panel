@@ -75,22 +75,22 @@ if __name__ == '__main__':
     # Map y-axis positions in the phylogeny to reference strains.
     collection_df["y_axis_position_in_phylogeny"] = collection_df["reference_strain"].map(y_axis_positions_per_tip_name)
 
-    # # Find maximum y-axis position for reference strains within each clade.
-    # max_y_axis_position_by_reference_clade = collection_df.groupby("clade_reference")["y_axis_position_in_phylogeny"].max().reset_index().rename(
-    #     columns={"y_axis_position_in_phylogeny": "max_y_axis_position_in_phylogeny"}
-    # )
+    # Find maximum y-axis position for reference strains within each clade.
+    min_y_axis_position_by_reference_clade = collection_df.groupby("clade_reference")["y_axis_position_in_phylogeny"].min().reset_index().rename(
+        columns={"y_axis_position_in_phylogeny": "min_y_axis_position_in_phylogeny"}
+    )
 
-    # # Annotate max y-axis position per clade to collection.
-    # collection_df = collection_df.merge(
-    #     max_y_axis_position_by_reference_clade,
-    #     on="clade_reference",
-    #     how="left",
-    # )
+    # Annotate max y-axis position per clade to collection.
+    collection_df = collection_df.merge(
+        min_y_axis_position_by_reference_clade,
+        on="clade_reference",
+        how="left",
+    )
 
     # Sort collection by y-axis position.
     sorted_df = collection_df.sort_values(
-        "y_axis_position_in_phylogeny",
-        ascending=False,
+        ["min_y_axis_position_in_phylogeny", "reference_strain"],
+        ascending=[False, True],
     )
 
     # Extract sorted values for each grouping column.
