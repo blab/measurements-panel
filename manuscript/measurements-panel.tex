@@ -143,6 +143,9 @@ Auspice is a phylogenetic visualization platform inspired by \emph{nextflu} and 
 The visualization requires a minimum of two JavaScript Object Notation (JSON) files that are produced by the Nextstrain bioinformatics toolkit, Augur \citep{Huddleston2021}.
 The phylogenetic tree is provided via a dataset JSON file produced by \texttt{augur export v2} and the measurements data is provided via a measurements sidecar JSON file produced by \texttt{augur measurements}.
 The measurements file must follow a specific filename format for Auspice to link it to the dataset file, where the dataset filename is \texttt{\$\{name\}.json} and the measurements filename must be \texttt{\$\{name\}\_measurements.json}.
+The measurements sidecar JSON is expected to have an array of collections, where each collection contains its display configurations for Auspice and an array of measurements.
+Each measurement must include a numeric \texttt{value} to plot along the x-axis and a \texttt{strain} name that exactly matches a sequence name in the phylogenetic tree to support interactivity between panels.
+For complete technical details about the data structure used by the measurements panel, see the \href{https://github.com/nextstrain/augur/blob/797af0d7fa3291574b76823ae22563f52b2ab33c/augur/data/schema-measurements.json}{measurements sidecar JSON schema document}.
 The application can be cloned and run locally or users can use Auspice through two public websites.
 Users can drag and drop dataset and measurements files onto \href{https://auspice.us/}{auspice.us/} to visualize the data locally in their own browser.
 Visualizations can be also shared with others through \href{https://nextstrain.org/}{nextstrain.org/}.
@@ -165,9 +168,9 @@ This algorithm mimics the decision-making approach used to assign clade labels i
 To construct the measurements panel JSON, we first normalized the raw HI titer measurements with Augur's implementation of the titer substitution model \citep{Neher:2016hy}.
 Normalization $\log_{2}$-transforms raw titer measurements and subtracts the transformed measurement for test virus $a$ and reference serum $\beta$ raised against reference virus $b$ from the corresponding measurement for the reference virus $b$ and its serum $\beta$.
 This normalization produces an antigenic distance between test and reference viruses that we can compare across HI experiments.
-Next, we converted these distances to a tab-separated values (TSV) file with a custom Python script and ran the new \texttt{augur measurements export} command with this TSV file as input.
-Using a collection configuration file passed to the \texttt{augur measurements export} command, we sorted grouping labels in the measurements JSON file for reference strain, reference clade, and serum by descending order of the earliest collection date of reference strains in each clade and then by descending order of reference strain collection date within the clade.
-This sorting causes reference strains and other grouping labels to appear in the measurements panel in roughly the same order each reference clade appears in the phylogeny.
+Next, we converted these distances to a tab-separated values (TSV) file with a custom Python script (\href{https://github.com/blab/measurements-panel/blob/4474cf1bbffbc9243330d4331349678f98533a02/scripts/get_antigenic_distances_between_strains.py}{scripts/get\_antigenic\_distances\_between\_strains.py}) and ran the new \texttt{augur measurements export} command with this TSV file as input.
+Using a collection configuration file passed to the \texttt{augur measurements export} command, we sorted grouping labels in the measurements JSON file for reference strain, reference clade, and serum by descending order of each clade's minimum y-axis position in the phylogeny and then by ascending alphabetical order of reference strain name within each clade.
+This sorting causes reference strains and other grouping labels to appear in the measurements panel in the same order each reference clade first appears in the phylogeny, keeping closely related clades adjacent to each other in the panel.
 We sorted the grouping labels for each measurement's ``source'' by the default which is in descending order by the number of measurements in the grouping.
 The resulting visualization for this paper has been shared via Nextstrain community and can be viewed at \href{https://nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}{nextstrain.org/community/blab/measurements-panel/flu/seasonal/h3n2/ha}.
 
@@ -354,7 +357,7 @@ This particular view uses reference viruses that are also present in the tree so
 k) The threshold lines for titer measurements to indicate two thresholds: antigenically identical viruses at x=0 and antigenically distinct viruses at x=2.
 l) The tooltip that displays more details for the hovered measurement.
 This particular view hovers over a mean and standard deviation.
-m) The x-axis of the measurements plot shows the range of measurements values in this collection.
+m) The x-axis of the measurements plot shows the range of measurement values in this collection.
 n) Clicking on a bar in the diversity panel updates the tree and measurements to color by genotypes at that position.
   }\label{fig:2}
 \end{figure}

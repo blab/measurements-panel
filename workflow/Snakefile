@@ -381,6 +381,7 @@ rule plot_antigenic_distances:
 
 rule generate_collection_config_json:
     input:
+        tree="results/{lineage}/tree.nwk",
         distances="results/{lineage}/antigenic_distances_between_strains.tsv",
     output:
         config_json="results/{lineage}/measurements_collection_config.json",
@@ -392,6 +393,7 @@ rule generate_collection_config_json:
     shell:
         """
         python3 scripts/generate_collection_config_json.py \
+            --tree {input.tree} \
             --collection {input.distances} \
             --groupings {params.groupings:q} \
             --output {output.config_json} &> {log}
