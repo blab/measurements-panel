@@ -45,9 +45,10 @@ If you do not, [register for a GISAID account](https://gisaid.org/register/).
   7. Select "Sequences (DNA) as FASTA".
   8. Select "HA" from the "DNA" section.
   9. Set the FASTA header string to `Isolate name|Isolate ID|Collection date|Originating lab`.
-  10. Select "Download".
-  11. Save file as `GISAID_batch_{batch_number}.fasta`.
-  12. Repeat steps 3-11 for the remaining batches.
+  10. Check the box next to "Replace spaces with underscores in FASTA header"
+  11. Select "Download".
+  12. Save file as `GISAID_batch_{batch_number}.fasta`.
+  13. Repeat steps 3-12 for the remaining batches.
 
 The resulting FASTA files will contain more sequences than accessions you searched for, since GISAID returns all versions of sequences for a given isolate accession.
 Concatenate all of the batches and remove duplicate sequences with [seqkit](https://bioinf.shenwei.me/seqkit/).
