@@ -35,7 +35,8 @@ if __name__ == '__main__':
         # have mutations at requested sites.
         node.clade_membership = "unassigned"
 
-        if (node.name in mutations_by_node and
+        if (node.parent is not None and
+            node.name in mutations_by_node and
             "HA1" in mutations_by_node[node.name]["aa_muts"]):
             node_mutations = mutations_by_node[node.name]["aa_muts"]["HA1"]
             clade_mutations = {}
